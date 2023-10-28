@@ -1,4 +1,4 @@
-import { Logger, UseGuards } from '@nestjs/common';
+import { Logger, UseFilters, UseGuards } from '@nestjs/common';
 import {
   OnGatewayConnection,
   OnGatewayDisconnect,
@@ -10,12 +10,14 @@ import {
 
 import { Server } from 'socket.io';
 import { WsGuard } from '../../core/guards/ws.guard';
+import { AllSocketExceptionFilter } from '../../core/filters/all-socket-exception.filter';
 
 @WebSocketGateway({
   cors: {
     origin: '*',
   },
 })
+@UseFilters(AllSocketExceptionFilter)
 export class ChatGateway
   implements OnGatewayInit, OnGatewayConnection, OnGatewayDisconnect
 {

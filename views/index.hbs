@@ -72,8 +72,7 @@
   const options = {transportOptions: {
       polling: {
         extraHeaders: {
-          Authorization: 'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY1M2JkNDUyMTU2YWEzZjQ1ODU0YTMzNiIsInJvbGVzIjpbeyJuYW1lIjoidXNlciIsImlkIjoiNjUzYmNjZTJkYTU0ZGM5YzRhMWY4OTBlIn1dLCJpYXQiOjE2OTg0OTE3OTMsImV4cCI6MTY5ODQ5NTM5M30.x-mCieyGUk_0fgZnDd4zBRh7TGMUoDX5SzH5uBM5RB4',
-        }
+          Authorization: 'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY1M2JkNDUyMTU2YWEzZjQ1ODU0YTMzNiIsInJvbGVzIjpbeyJuYW1lIjoidXNlciIsImlkIjoiNjUzYmNjZTJkYTU0ZGM5YzRhMWY4OTBlIn1dLCJpYXQiOjE2OTg0OTIwODEsImV4cCI6MTY5ODQ5MjE0MX0.WsQu2NXRB_Gl52EqNEgJ2Wgi8s6yOEy4NDkJIKjTITY'}
       }
     }}
   const socket = io('ws://localhost:3000', options);
@@ -84,6 +83,9 @@
 
   socket.emit('private', "private from client")
   socket.on('private', (data) => {
+    console.log(data)
+  })
+  socket.on('error', (data) => {
     console.log(data)
   })
 
