@@ -32,6 +32,6 @@ export const UserSchema = SchemaFactory.createForClass(User).set('toJSON', {
   versionKey: false,
   transform: function (doc, ret) {
     delete ret._id;
-    delete ret._password;
+    delete ret.password;
   },
 });
