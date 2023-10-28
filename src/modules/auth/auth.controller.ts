@@ -9,7 +9,7 @@ import {
 } from '@nestjs/common';
 import { UsersService } from '../users/users.service';
 import { CreateUserDto } from '../users/dto/create-user.dto';
-import { Response } from '../../core/interceptors/response-interceptor';
+import { Response } from '../../core/interceptors/response.interceptor';
 import { User } from '../users/schemas/user.schema';
 import { AuthGuard } from '@nestjs/passport';
 import { AuthService } from './auth.service';
