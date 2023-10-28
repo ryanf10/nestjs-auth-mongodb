@@ -8,7 +8,7 @@ import { Request, Response } from 'express';
 import get from 'lodash.get';
 
 @Catch()
-export class AllExceptionFilter implements ExceptionFilter {
+export class AllHttpExceptionFilter implements ExceptionFilter {
   catch(exception: Error, host: ArgumentsHost) {
     const ctx = host.switchToHttp();
     const response = ctx.getResponse<Response>();
