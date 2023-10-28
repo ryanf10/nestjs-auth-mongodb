@@ -13,6 +13,7 @@ import { Response } from '../../core/interceptors/response.interceptor';
 import { User } from '../users/schemas/user.schema';
 import { AuthGuard } from '@nestjs/passport';
 import { AuthService } from './auth.service';
+import { UserRequest } from '../../core/decorators/user-request.decorator';
 
 @Controller('auth')
 export class AuthController {
@@ -36,7 +37,7 @@ export class AuthController {
 
   @UseGuards(AuthGuard('jwt'))
   @Get('profile')
-  getProfile(@Request() req) {
-    return { data: req.user };
+  async getProfile(@UserRequest() user: User): Promise<Response<User>> {
+    return { data: user };
   }
 }
