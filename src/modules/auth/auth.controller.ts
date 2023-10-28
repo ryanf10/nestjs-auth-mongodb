@@ -14,6 +14,8 @@ import { User } from '../users/schemas/user.schema';
 import { AuthGuard } from '@nestjs/passport';
 import { AuthService } from './auth.service';
 import { UserRequest } from '../../core/decorators/user-request.decorator';
+import { RolesGuard } from '../../core/guards/roles.guard';
+import { AllowedRole } from '../../core/decorators/allowed-role.decorator';
 
 @Controller('auth')
 export class AuthController {
@@ -38,6 +40,13 @@ export class AuthController {
   @UseGuards(AuthGuard('jwt'))
   @Get('profile')
   async getProfile(@UserRequest() user: User): Promise<Response<User>> {
+    return { data: user };
+  }
+
+  @UseGuards(AuthGuard('jwt'), RolesGuard)
+  @AllowedRole(['admin'])
+  @Get('test')
+  async test(@UserRequest() user: User): Promise<Response<User>> {
     return { data: user };
   }
 }
