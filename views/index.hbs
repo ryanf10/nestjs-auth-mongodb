@@ -72,7 +72,7 @@
   const options = {transportOptions: {
       polling: {
         extraHeaders: {
-          Authorization: 'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY1M2JkNDUyMTU2YWEzZjQ1ODU0YTMzNiIsInJvbGVzIjpbeyJuYW1lIjoidXNlciIsImlkIjoiNjUzYmNjZTJkYTU0ZGM5YzRhMWY4OTBlIn1dLCJpYXQiOjE2OTg0OTIwODEsImV4cCI6MTY5ODQ5MjE0MX0.WsQu2NXRB_Gl52EqNEgJ2Wgi8s6yOEy4NDkJIKjTITY'}
+          Authorization: 'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY1M2JkNDUyMTU2YWEzZjQ1ODU0YTMzNiIsInJvbGVzIjpbeyJuYW1lIjoidXNlciIsImlkIjoiNjUzYmNjZTJkYTU0ZGM5YzRhMWY4OTBlIn1dLCJpYXQiOjE2OTg1NDIxNDcsImV4cCI6MTY5ODU0NTc0N30.8In9cNBrAJVLoR7D_f4qZ9miwu2zhrXOlaxZbSRZmbg'}
       }
     }}
   const socket = io('ws://localhost:3000', options);
@@ -88,7 +88,6 @@
   socket.on('error', (data) => {
     console.log(data)
   })
-
 </script>
 </body>
 </html>
