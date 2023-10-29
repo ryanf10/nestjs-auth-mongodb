@@ -4,6 +4,7 @@ import { User } from './schemas/user.schema';
 import { Model } from 'mongoose';
 import { CreateUserDto } from './dto/create-user.dto';
 import { RolesService } from '../roles/roles.service';
+import * as bcrypt from 'bcrypt';
 @Injectable()
 export class UsersService {
   constructor(
@@ -12,7 +13,10 @@ export class UsersService {
   ) {}
 
   async create(createUserDto: CreateUserDto): Promise<User> {
-    const createdUser = new this.user(createUserDto);
+    const createdUser = new this.user({
+      email: createUserDto.email,
+      password: await this.hashPassword(createUserDto.password),
+    });
     const userRole = await this.roleService.getRoleByName('user');
     createdUser.roles = [userRole];
     return createdUser.save();
@@ -24,5 +28,15 @@ export class UsersService {
 
   async findOneById(id: string): Promise<User> {
     return this.user.findById(id).populate('roles').exec();
+  }
+
+  async hashPassword(password: string) {
+    const hash = await bcrypt.hash(password, 10);
+    return hash;
+  }
+
+  async comparePassword(enteredPassword: string, dbPassword: string) {
+    const match = await bcrypt.compare(enteredPassword, dbPassword);
+    return match;
   }
 }
