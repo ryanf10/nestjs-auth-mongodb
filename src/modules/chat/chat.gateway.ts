@@ -58,20 +58,20 @@ export class ChatGateway
   }
 
   @UseGuards(WsGuard)
-  @SubscribeMessage('private')
+  @SubscribeMessage('chat')
   handlePrivate(
     @ConnectedSocket() client: Socket,
     @MessageBody() data: { [k: string]: any },
     @UserWs() user: User,
   ) {
     this.logger.log(
-      `Message received from client id: ${client.id} client email: ${user.email}`,
+      `Message received from client id: ${client.id} client email: ${user.email} message: ${data.message}`,
     );
     this.logger.debug(`Payload: ${data}`);
-
-    return {
-      event: 'private',
-      data: `Hi Client ${user.email}`,
-    };
+    return this.io.emit('chat', {
+      sender: user.email,
+      message: data.message,
+      timestamp: new Date().getTime(),
+    });
   }
 }

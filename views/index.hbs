@@ -10,7 +10,7 @@
           font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
       }
 
-      #form {
+      #form-chat {
           background: rgba(0, 0, 0, 0.15);
           padding: 0.25rem;
           position: fixed;
@@ -35,7 +35,7 @@
           outline: none;
       }
 
-      #form > button {
+      #form-chat > button {
           background: #333;
           border: none;
           padding: 0 1rem;
@@ -61,33 +61,96 @@
   </style>
 </head>
 <body>
-<ul id="messages"></ul>
-<form id="form" action="">
-  <span id="typing"></span>
-  <input id="input" autocomplete="off" />
-  <button>Send</button>
-</form>
+<div id="login">
+  <form method="post" action="" id='form-login'>
+    <input type="email" id="email" placeholder="email" required>
+    <input type="password" id="password" placeholder="password" required>
+    <button>Login</button>
+  </form>
+</div>
+<div id="chat" style="display: none">
+  <ul id="messages"></ul>
+  <form id="form-chat" action="">
+    <span id="typing"></span>
+    <input id="input" autocomplete="off" />
+    <button>Send</button>
+  </form>
+</div>
 <script src="https://cdn.socket.io/4.5.4/socket.io.min.js"></script>
+<script src="https://unpkg.com/axios@1.1.2/dist/axios.min.js"></script>
 <script>
-  const options = {transportOptions: {
-      polling: {
-        extraHeaders: {
-          Authorization: 'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY1M2JkNDUyMTU2YWEzZjQ1ODU0YTMzNiIsInJvbGVzIjpbeyJuYW1lIjoidXNlciIsImlkIjoiNjUzYmNjZTJkYTU0ZGM5YzRhMWY4OTBlIn1dLCJpYXQiOjE2OTg1NDIxNDcsImV4cCI6MTY5ODU0NTc0N30.8In9cNBrAJVLoR7D_f4qZ9miwu2zhrXOlaxZbSRZmbg'}
+  let state = 'login'
+  let token = null
+  let user = null
+  const formLogin = document.getElementById('form-login');
+  const email = document.getElementById('email');
+  const password = document.getElementById('password');
+  formLogin.addEventListener('submit', async (e) => {
+    e.preventDefault()
+
+    await axios.post('http://localhost:3000/auth/login', {email: email.value, password: password.value}).then((res) => {
+      token = res.data.data.token.access_token
+      state = 'chat'
+      initChat()
+    }).catch((err) => {
+      alert(err.message)
+    }).then(async () => {
+      await axios.get('http://localhost:3000/auth/profile', {headers: {Authorization: `Bearer ${token}`}}).then((res) => {
+        user = res.data.data
+      })
+    })
+
+  })
+</script>
+<script>
+  const divLogin = document.getElementById('login');
+  const divChat = document.getElementById('chat');
+  let socket = null
+  const initChat = () => {
+    const options = {
+      transportOptions: {
+        polling: {
+          extraHeaders: {
+            Authorization: `Bearer ${token}`
+          }
+        }
       }
-    }}
-  const socket = io('ws://localhost:3000', options);
-  socket.emit('ping', "ping from client")
-  socket.on('pong', (data) => {
-    console.log(data)
+    }
+    socket = io('ws://localhost:3000', options);
+    socket.emit('ping', "ping from client")
+    socket.on('pong', (data) => {
+      console.log(data)
+    })
+    socket.on('error', (data) => {
+        console.log(data)
+      })
+    socket.on('chat', (data) => {
+      const item = document.createElement('li');
+      item.textContent = `(${new Date(data.timestamp).toLocaleString()} ${data.sender === user.email ? 'You': data.sender}) ${data.message}`;
+      messages.appendChild(item);
+      window.scrollTo(0, document.body.scrollHeight);
+    })
+    divLogin.style.display = 'none'
+    divChat.style.display = 'block'
+
+  }
+
+  const formChat = document.getElementById('form-chat');
+  const inputChat = document.getElementById('input');
+
+  const messages = document.getElementById('messages');
+
+  formChat.addEventListener('submit', (e) => {
+    e.preventDefault()
+
+    if(inputChat.value !== '') {
+      socket.emit('chat', {
+        message: inputChat.value
+      })
+      inputChat.value = ''
+    }
   })
 
-  socket.emit('private', "private from client")
-  socket.on('private', (data) => {
-    console.log(data)
-  })
-  socket.on('error', (data) => {
-    console.log(data)
-  })
 </script>
 </body>
 </html>
