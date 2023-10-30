@@ -16,7 +16,10 @@ import { AuthService } from './auth.service';
 import { UserRequest } from '../../core/decorators/user-request.decorator';
 import { RolesGuard } from '../../core/guards/roles.guard';
 import { AllowedRole } from '../../core/decorators/allowed-role.decorator';
+import { ApiBearerAuth, ApiBody, ApiTags } from '@nestjs/swagger';
+import { UserLoginDto } from '../users/dto/user-login.dto';
 
+@ApiTags('auth')
 @Controller('auth')
 export class AuthController {
   constructor(
@@ -31,18 +34,21 @@ export class AuthController {
     return { data: user };
   }
 
+  @ApiBody({ type: UserLoginDto })
   @UseGuards(AuthGuard('local'))
   @Post('/login')
   async login(@Request() req) {
     return { data: { token: await this.authService.login(req.user) } };
   }
 
+  @ApiBearerAuth('JWT-auth')
   @UseGuards(AuthGuard('jwt'))
   @Get('profile')
   async getProfile(@UserRequest() user: User): Promise<Response<User>> {
     return { data: user };
   }
 
+  @ApiBearerAuth('JWT-auth')
   @UseGuards(AuthGuard('jwt'), RolesGuard)
   @AllowedRole(['admin'])
   @Get('test')
