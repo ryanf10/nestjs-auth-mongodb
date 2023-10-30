@@ -1,6 +1,6 @@
 import { ExtractJwt, Strategy } from 'passport-jwt';
 import { PassportStrategy } from '@nestjs/passport';
-import { Injectable } from '@nestjs/common';
+import { Injectable, UnauthorizedException } from '@nestjs/common';
 import { UsersService } from '../users/users.service';
 import Redis from 'ioredis';
 import { InjectRedis } from '@liaoliaots/nestjs-redis';
@@ -24,6 +24,9 @@ export class JwtStrategy extends PassportStrategy(Strategy) {
       return JSON.parse(cachedProfile);
     } else {
       const user = await this.userService.findOneById(payload.id);
+      if (!user) {
+        throw new UnauthorizedException('Unauthenticated');
+      }
       delete user.password;
       await this.redis.set(
         `user-${payload.id}`,
