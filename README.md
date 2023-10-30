@@ -14,6 +14,7 @@
 - 🔑 RBAC — Authentication and Role Authorization starter kit
 - :satellite: Socket.io — Websocket with authentication & simple live chat demo
 - :mag: Cache — Redis
+- :notebook: Api Documentation — Swagger
 
 ## Installation
 
@@ -50,6 +51,14 @@ mongosh
 ```
 db.roles.insertMany([{name: 'user'},{name: 'admin'}])
 ```
+
+## API Documentation
+
+http://localhost:3000/swagger
+
+## Simple Live Chat with WebSocket Demo
+
+http://localhost:3000
 
 ## Test
 
