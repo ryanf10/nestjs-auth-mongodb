@@ -2,10 +2,15 @@ import { ExtractJwt, Strategy } from 'passport-jwt';
 import { PassportStrategy } from '@nestjs/passport';
 import { Injectable } from '@nestjs/common';
 import { UsersService } from '../users/users.service';
+import Redis from 'ioredis';
+import { InjectRedis } from '@liaoliaots/nestjs-redis';
 
 @Injectable()
 export class JwtStrategy extends PassportStrategy(Strategy) {
-  constructor(private readonly userService: UsersService) {
+  constructor(
+    private readonly userService: UsersService,
+    @InjectRedis() private readonly redis: Redis,
+  ) {
     super({
       jwtFromRequest: ExtractJwt.fromAuthHeaderAsBearerToken(),
       ignoreExpiration: false,
@@ -14,8 +19,19 @@ export class JwtStrategy extends PassportStrategy(Strategy) {
   }
 
   async validate(payload: any) {
-    const user = await this.userService.findOneById(payload.id);
-    delete user.password;
-    return user;
+    const cachedProfile = await this.redis.get(`user-${payload.id}`);
+    if (cachedProfile) {
+      return JSON.parse(cachedProfile);
+    } else {
+      const user = await this.userService.findOneById(payload.id);
+      delete user.password;
+      await this.redis.set(
+        `user-${payload.id}`,
+        JSON.stringify(user),
+        'EX',
+        3600,
+      );
+      return user;
+    }
   }
 }
