@@ -18,9 +18,7 @@ export class User {
   })
   email: string;
 
-  @Prop({
-    unique: true,
-  })
+  @Prop()
   password: string;
 
   @Prop({ type: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Role' }] })
