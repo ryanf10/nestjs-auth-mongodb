@@ -6,7 +6,7 @@
 
 [Nest](https://github.com/nestjs/nest) framework TypeScript starter repository. This repository consists of:
 
-- 🔼 NestJS 8
+- 🔼 NestJS 10
 - ✨ TypeScript
 - 📏 ESLint — Find and fix problems in your code
 - 💖 Prettier — Format your code consistently
