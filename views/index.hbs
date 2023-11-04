@@ -76,7 +76,7 @@
     <button>Send</button>
   </form>
 </div>
-<script src="https://cdn.socket.io/4.5.4/socket.io.min.js"></script>
+<script src="https://cdn.socket.io/4.7.2/socket.io.min.js"></script>
 <script src="https://unpkg.com/axios@1.1.2/dist/axios.min.js"></script>
 <script>
   let state = 'login'
@@ -129,6 +129,9 @@
       item.textContent = `(${new Date(data.timestamp).toLocaleString()} ${data.sender === user.email ? 'You': data.sender}) ${data.message}`;
       messages.appendChild(item);
       window.scrollTo(0, document.body.scrollHeight);
+    })
+    socket.on('notification', (data) => {
+      console.log(data)
     })
     divLogin.style.display = 'none'
     divChat.style.display = 'block'

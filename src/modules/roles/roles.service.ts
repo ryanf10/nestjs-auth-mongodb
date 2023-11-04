@@ -12,6 +12,6 @@ export class RolesService {
   }
 
   async getRoleByName(name: string): Promise<Role> {
-    return this.role.findOne({ name: name }).lean().exec();
+    return this.role.findOne({ name: name }).exec();
   }
 }

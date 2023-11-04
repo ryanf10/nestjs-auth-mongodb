@@ -41,7 +41,7 @@ export class ChatGateway
   }
 
   handleDisconnect(@ConnectedSocket() client: Socket) {
-    this.logger.log(`Cliend id:${client.id} disconnected`);
+    this.logger.log(`Client id:${client.id} disconnected`);
   }
 
   @SubscribeMessage('ping')
