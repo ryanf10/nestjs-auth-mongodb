@@ -20,7 +20,12 @@ export class AllHttpExceptionFilter implements ExceptionFilter {
         statusCode: status,
         timestamp: new Date().toISOString(),
         path: request.url,
-        ...(exception.getResponse() as Record<string, any>),
+        messages: [
+          {
+            name: get(exception.getResponse(), 'message'),
+            errors: [get(exception.getResponse(), 'message')],
+          },
+        ],
       });
     } else if (exception.name === 'ValidationError') {
       // handle mongodb validation
@@ -46,7 +51,12 @@ export class AllHttpExceptionFilter implements ExceptionFilter {
         statusCode: 500,
         timestamp: new Date().toISOString(),
         path: request.url,
-        messages: exception.message,
+        messages: [
+          {
+            name: exception.message,
+            errors: [exception.message],
+          },
+        ],
       });
     }
   }
