@@ -15,7 +15,7 @@ import { RolesModule } from '../roles/roles.module';
           const schema = UserSchema;
           // eslint-disable-next-line @typescript-eslint/no-var-requires
           schema.plugin(require('mongoose-unique-validator'), {
-            message: '{PATH} must be unique',
+            message: '{PATH} already exists',
           });
           return schema;
         },
