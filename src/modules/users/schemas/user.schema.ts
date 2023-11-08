@@ -4,7 +4,7 @@ import * as mongoose from 'mongoose';
 import { Role } from '../../roles/schemas/role.schema';
 
 export type UserDcoument = HydratedDocument<User>;
-@Schema()
+@Schema({ timestamps: true })
 export class User {
   @Prop({
     type: mongoose.Schema.Types.ObjectId,
@@ -23,6 +23,12 @@ export class User {
 
   @Prop({ type: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Role' }] })
   roles: Role[];
+
+  @Prop({ type: mongoose.Schema.Types.Date })
+  createdAt?: Date;
+
+  @Prop({ type: mongoose.Schema.Types.Date })
+  updatedAt?: Date;
 }
 
 export const UserSchema = SchemaFactory.createForClass(User).set('toJSON', {
