@@ -42,14 +42,10 @@ $ yarn run start:dev
 $ yarn run start:prod
 ```
 
-## Insert role to MongoDB
+## Seed role to MongoDB
 
 ```bash
-mongosh
-```
-
-```
-db.roles.insertMany([{name: 'user'},{name: 'admin'}])
+yarn nestjs-command seed:role
 ```
 
 ## API Documentation

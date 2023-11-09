@@ -39,6 +39,7 @@
     "lodash.get": "^4.4.2",
     "mongoose": "^7.6.3",
     "mongoose-unique-validator": "^4.0.0",
+    "nestjs-command": "^3.1.4",
     "passport": "^0.6.0",
     "passport-local": "^1.0.0",
     "reflect-metadata": "^0.1.13",

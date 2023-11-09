@@ -2,6 +2,7 @@ import { Module } from '@nestjs/common';
 import { MongooseModule } from '@nestjs/mongoose';
 import { RolesService } from './roles.service';
 import { Role, RoleSchema } from './schemas/role.schema';
+import { RolesSeed } from './seeds/roles.seed';
 
 @Module({
   imports: [
@@ -19,7 +20,7 @@ import { Role, RoleSchema } from './schemas/role.schema';
       },
     ]),
   ],
-  providers: [RolesService],
-  exports: [RolesService],
+  providers: [RolesService, RolesSeed],
+  exports: [RolesService, RolesSeed],
 })
 export class RolesModule {}

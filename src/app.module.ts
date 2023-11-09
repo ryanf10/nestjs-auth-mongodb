@@ -8,6 +8,7 @@ import { ConfigModule } from '@nestjs/config';
 import { AuthModule } from './modules/auth/auth.module';
 import { ChatModule } from './modules/chat/chat.module';
 import { NotificationsModule } from './modules/notifications/notifications.module';
+import { CommandModule } from 'nestjs-command';
 
 @Module({
   imports: [
@@ -19,6 +20,7 @@ import { NotificationsModule } from './modules/notifications/notifications.modul
     AuthModule,
     ChatModule,
     NotificationsModule,
+    CommandModule,
   ],
   controllers: [AppController],
   providers: [AppService],
