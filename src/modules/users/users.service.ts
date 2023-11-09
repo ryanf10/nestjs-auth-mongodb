@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, InternalServerErrorException } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { User } from './schemas/user.schema';
 import { Model } from 'mongoose';
@@ -13,12 +13,15 @@ export class UsersService {
   ) {}
 
   async create(createUserDto: CreateUserDto): Promise<User> {
+    const userRole = await this.roleService.getRoleByName('user');
+    if (!userRole) {
+      throw new InternalServerErrorException('cannot assign role');
+    }
     const createdUser = new this.user({
       email: createUserDto.email,
       password: await this.hashPassword(createUserDto.password),
+      roles: [userRole],
     });
-    const userRole = await this.roleService.getRoleByName('user');
-    createdUser.roles = [userRole];
     return createdUser.save();
   }
 
