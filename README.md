@@ -69,6 +69,10 @@ $ yarn run test:e2e
 $ yarn run test:cov
 ```
 
+## Frontend Support
+
+You can use this [Project](https://github.com/ryanf10/ts-nextjs-tailwind-hoc-starter) as your frontend. It created with Next.js, Tailwind CSS, and Typescript.
+
 ## Support
 
 Nest is an MIT-licensed open source project. It can grow thanks to the sponsors and support by the amazing backers. If you'd like to join them, please [read more here](https://docs.nestjs.com/support).
