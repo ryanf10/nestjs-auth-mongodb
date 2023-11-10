@@ -6,9 +6,39 @@ import { AllHttpExceptionFilter } from './core/filters/all-http-exception.filter
 import { NestExpressApplication } from '@nestjs/platform-express';
 import { join } from 'path';
 import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
+import { WinstonModule } from 'nest-winston';
+import { format, transports } from 'winston';
+import * as process from 'process';
 
 async function bootstrap() {
-  const app = await NestFactory.create<NestExpressApplication>(AppModule);
+  const app = await NestFactory.create<NestExpressApplication>(AppModule, {
+    logger: WinstonModule.createLogger({
+      transports: [
+        //  Log Error
+        new transports.File({
+          filename: `logs/error.log`,
+          level: 'error',
+          format: format.combine(format.timestamp(), format.json()),
+        }),
+        // Log All
+        new transports.File({
+          filename: `logs/combined.log`,
+          format: format.combine(format.timestamp(), format.json()),
+        }),
+        // we also want to see logs in our console
+        new transports.Console({
+          format: format.combine(
+            format.cli(),
+            format.splat(),
+            format.timestamp(),
+            format.printf((info) => {
+              return `${info.timestamp} ${info.level} [${info.context}]: ${info.message}`;
+            }),
+          ),
+        }),
+      ],
+    }),
+  });
   app.setBaseViewsDir(join(__dirname, '..', 'views'));
   app.setViewEngine('hbs');
   app.useGlobalPipes(new ValidateInputPipe());
@@ -40,6 +70,6 @@ async function bootstrap() {
     origin: 'http://localhost:3001',
     credentials: true,
   });
-  await app.listen(3000);
+  await app.listen(process.env.PORT);
 }
 bootstrap();
