@@ -26,11 +26,11 @@ export class UsersService {
   }
 
   async findOneByEmail(email: string): Promise<User> {
-    return this.user.findOne({ email: email }).populate('roles').exec();
+    return this.user.findOne({ email: email }).populate('roles');
   }
 
   async findOneById(id: string): Promise<User> {
-    return this.user.findById(id).populate('roles').exec();
+    return this.user.findById(id).populate('roles');
   }
 
   async hashPassword(password: string) {

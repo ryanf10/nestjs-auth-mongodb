@@ -45,6 +45,7 @@ export class AuthController {
   @UseGuards(AuthGuard('jwt'))
   @Get('profile')
   async getProfile(@UserRequest() user: User): Promise<Response<User>> {
+    console.log(user);
     return { data: user };
   }
 

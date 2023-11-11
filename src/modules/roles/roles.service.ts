@@ -15,10 +15,10 @@ export class RolesService {
     return createdRole.save();
   }
   async getRoleById(id: string): Promise<Role> {
-    return this.role.findById(id).exec();
+    return this.role.findById(id);
   }
 
   async getRoleByName(name: string): Promise<Role> {
-    return this.role.findOne({ name: name }).exec();
+    return this.role.findOne({ name: name });
   }
 }
