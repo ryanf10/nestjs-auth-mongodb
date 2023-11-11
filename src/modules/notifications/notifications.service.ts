@@ -5,6 +5,7 @@ import { Notification } from './schemas/notification';
 import { CreateNotificationDto } from './dto/create-notification-dto';
 import { UsersService } from '../users/users.service';
 import { NotificationsGateway } from './notifications.gateway';
+import * as mongoose from 'mongoose';
 
 @Injectable()
 export class NotificationsService {
@@ -16,7 +17,7 @@ export class NotificationsService {
   ) {}
 
   async getAlL() {
-    return this.notification.find().exec();
+    return this.notification.find();
   }
 
   async create(
@@ -38,5 +39,12 @@ export class NotificationsService {
       createdNotification.receiver._id,
     );
     return createdNotification.save();
+  }
+
+  async getNotificationsByUserId(user_id: string) {
+    console.log(user_id);
+    return this.notification.find({
+      receiver: new mongoose.Types.ObjectId(user_id),
+    });
   }
 }

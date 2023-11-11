@@ -1,9 +1,11 @@
-import { Body, Controller, Post, UseGuards } from '@nestjs/common';
+import { Body, Controller, Get, Post, UseGuards } from '@nestjs/common';
 import { NotificationsService } from './notifications.service';
 import { CreateNotificationDto } from './dto/create-notification-dto';
 import { AuthGuard } from '@nestjs/passport';
 import { RolesGuard } from '../../core/guards/roles.guard';
 import { AllowedRole } from '../../core/decorators/allowed-role.decorator';
+import { UserRequest } from '../../core/decorators/user-request.decorator';
+import { User } from '../users/schemas/user.schema';
 
 @Controller('notifications')
 export class NotificationsController {
@@ -16,5 +18,14 @@ export class NotificationsController {
       createNotificationDto,
     );
     return { data: notification };
+  }
+
+  @UseGuards(AuthGuard('jwt'))
+  @Get('user')
+  async getNotificationsByUserId(@UserRequest() user: User) {
+    console.log(user);
+    return {
+      data: await this.notificationService.getNotificationsByUserId(user._id),
+    };
   }
 }
