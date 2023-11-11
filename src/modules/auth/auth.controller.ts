@@ -18,6 +18,7 @@ import { RolesGuard } from '../../core/guards/roles.guard';
 import { AllowedRole } from '../../core/decorators/allowed-role.decorator';
 import { ApiBearerAuth, ApiBody, ApiTags } from '@nestjs/swagger';
 import { UserLoginDto } from '../users/dto/user-login.dto';
+import { RealIP } from 'nestjs-real-ip';
 
 @ApiTags('auth')
 @Controller('auth')
@@ -37,8 +38,8 @@ export class AuthController {
   @ApiBody({ type: UserLoginDto })
   @UseGuards(AuthGuard('local'))
   @Post('/login')
-  async login(@Request() req) {
-    await this.authService.sendLoginNotification(req.user, req.ip);
+  async login(@Request() req, @RealIP() ip: string) {
+    await this.authService.sendLoginNotification(req.user, ip);
     return { data: { token: await this.authService.login(req.user) } };
   }
 

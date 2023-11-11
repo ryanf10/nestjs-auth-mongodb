@@ -1115,6 +1115,11 @@
   resolved "https://registry.yarnpkg.com/@socket.io/component-emitter/-/component-emitter-3.1.0.tgz#96116f2a912e0c02817345b3c10751069920d553"
   integrity sha512-+9jVqKhRSpsc591z5vX+X5Yyw+he/HCB4iQ/RYxw35CEPaY1gnsNE43nf9n9AaYjAQrTiI/mOwKUKdUs9vf7Xg==
 
+"@supercharge/request-ip@^1.2.0":
+  version "1.2.0"
+  resolved "https://registry.yarnpkg.com/@supercharge/request-ip/-/request-ip-1.2.0.tgz#b8a8164322e09de3fa9b6f556885795c4841a7d4"
+  integrity sha512-wlt6JW69MHqLY2M6Sm/jVyCojNRKq2CBvwH0Hbx24SFhDQQGkgEjeKxVutDxHSyrWixFaOSLXC27euzxijhyMQ==
+
 "@tsconfig/node10@^1.0.7":
   version "1.0.9"
   resolved "https://registry.yarnpkg.com/@tsconfig/node10/-/node10-1.0.9.tgz#df4907fc07a886922637b15e02d4cebc4c0021b2"
@@ -5008,6 +5013,13 @@ nestjs-command@^3.1.4:
   dependencies:
     lodash.compact "^3.0.1"
     lodash.flattendeep "^4.4.0"
+
+nestjs-real-ip@^3.0.1:
+  version "3.0.1"
+  resolved "https://registry.yarnpkg.com/nestjs-real-ip/-/nestjs-real-ip-3.0.1.tgz#c95b1dac8de377e0ee3d070d0430d088733c0919"
+  integrity sha512-vsBlvXBWXg+GorIoXmTasNaJZyeBpTypgnrq1jk9xOEL7FGv9ZFBafyhllliNbSuCDpwxeC7Sxc6hBk8onPXUg==
+  dependencies:
+    "@supercharge/request-ip" "^1.2.0"
 
 node-abort-controller@^3.0.1:
   version "3.1.1"

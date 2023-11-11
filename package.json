@@ -41,6 +41,7 @@
     "mongoose-unique-validator": "^4.0.0",
     "nest-winston": "^1.9.4",
     "nestjs-command": "^3.1.4",
+    "nestjs-real-ip": "^3.0.1",
     "passport": "^0.6.0",
     "passport-local": "^1.0.0",
     "reflect-metadata": "^0.1.13",
