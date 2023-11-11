@@ -42,9 +42,10 @@ export class NotificationsService {
   }
 
   async getNotificationsByUserId(user_id: string) {
-    console.log(user_id);
-    return this.notification.find({
-      receiver: new mongoose.Types.ObjectId(user_id),
-    });
+    return this.notification
+      .find({
+        receiver: new mongoose.Types.ObjectId(user_id),
+      })
+      .sort({ createdAt: 'desc' });
   }
 }
