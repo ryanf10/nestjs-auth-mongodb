@@ -1,8 +1,8 @@
 import { CanActivate, ExecutionContext, Injectable } from '@nestjs/common';
 import { UsersService } from '../../modules/users/users.service';
-import { Socket } from 'socket.io';
 import { WsException } from '@nestjs/websockets';
 import { JwtService } from '@nestjs/jwt';
+import { SocketWithAuth } from '../../socket-io-adapter';
 
 @Injectable()
 export class WsGuard implements CanActivate {
@@ -12,22 +12,12 @@ export class WsGuard implements CanActivate {
   ) {}
 
   async canActivate(context: ExecutionContext): Promise<boolean> {
-    try {
-      const client: Socket & { [k: string]: any } = context
-        .switchToWs()
-        .getClient<Socket>();
-      const bearerToken = context
-        .getArgs()[0]
-        .handshake.headers.authorization.split(' ')[1];
-      const decoded = this.jwtService.verify(bearerToken) as any;
-      const user = await this.userService.findOneById(decoded.id);
-      if (!user) {
-        throw new WsException('Unauthenticated');
-      }
-      client.user = user;
-      return true;
-    } catch (err) {
+    const client: SocketWithAuth = context
+      .switchToWs()
+      .getClient<SocketWithAuth>();
+    if (!client.user) {
       throw new WsException('Unauthenticated');
     }
+    return true;
   }
 }

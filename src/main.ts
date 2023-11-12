@@ -9,6 +9,7 @@ import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
 import { WinstonModule } from 'nest-winston';
 import { format, transports } from 'winston';
 import * as process from 'process';
+import { SocketIOAdapter } from './socket-io-adapter';
 
 async function bootstrap() {
   const app = await NestFactory.create<NestExpressApplication>(AppModule, {
@@ -70,6 +71,7 @@ async function bootstrap() {
     origin: ['http://localhost:3001', process.env.FRONTEND_URL],
     credentials: true,
   });
+  app.useWebSocketAdapter(new SocketIOAdapter(app));
   await app.listen(process.env.PORT);
 }
 

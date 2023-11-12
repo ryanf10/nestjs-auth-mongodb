@@ -33,12 +33,9 @@ export class NotificationsService {
       message: createNotificationDto.message,
       receiver: receiver,
     });
-
-    await this.notificationsGateway.sendNotification(
-      createdNotification.message,
-      createdNotification.receiver._id,
-    );
-    return createdNotification.save();
+    await createdNotification.save();
+    await this.notificationsGateway.sendNotification(createdNotification);
+    return createdNotification;
   }
 
   async getNotificationsByUserId(user_id: string) {

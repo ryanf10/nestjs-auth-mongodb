@@ -10,17 +10,14 @@ import {
   WebSocketServer,
 } from '@nestjs/websockets';
 
-import { Server, Socket } from 'socket.io';
+import { Server } from 'socket.io';
 import { WsGuard } from '../../core/guards/ws.guard';
 import { AllSocketExceptionFilter } from '../../core/filters/all-socket-exception.filter';
 import { UserWs } from '../../core/decorators/user-ws.decorator';
 import { User } from '../users/schemas/user.schema';
+import { SocketWithAuth } from '../../socket-io-adapter';
 
-@WebSocketGateway({
-  cors: {
-    origin: '*',
-  },
-})
+@WebSocketGateway()
 @UseFilters(AllSocketExceptionFilter)
 export class ChatGateway
   implements OnGatewayInit, OnGatewayConnection, OnGatewayDisconnect
@@ -33,20 +30,20 @@ export class ChatGateway
     this.logger.log('Initialized');
   }
 
-  handleConnection(@ConnectedSocket() client: Socket) {
+  handleConnection(@ConnectedSocket() client: SocketWithAuth) {
     const { sockets } = this.io.sockets;
 
-    this.logger.log(`Client id: ${client.id} connected`);
+    this.logger.log(`Client id: ${client.id} ${client.user._id} connected`);
     this.logger.debug(`Number of connected clients: ${sockets.size}`);
   }
 
-  handleDisconnect(@ConnectedSocket() client: Socket) {
-    this.logger.log(`Client id:${client.id} disconnected`);
+  handleDisconnect(@ConnectedSocket() client: SocketWithAuth) {
+    this.logger.log(`Client id:${client.id} ${client.user._id} disconnected`);
   }
 
   @SubscribeMessage('ping')
   handleMessage(
-    @ConnectedSocket() client: Socket,
+    @ConnectedSocket() client: SocketWithAuth,
     @MessageBody() data: { [k: string]: any },
   ) {
     this.logger.log(`Message received from client id: ${client.id}`);
@@ -60,7 +57,7 @@ export class ChatGateway
   @UseGuards(WsGuard)
   @SubscribeMessage('chat')
   handlePrivate(
-    @ConnectedSocket() client: Socket,
+    @ConnectedSocket() client: SocketWithAuth,
     @MessageBody() data: { [k: string]: any },
     @UserWs() user: User,
   ) {

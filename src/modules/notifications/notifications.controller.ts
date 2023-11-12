@@ -23,7 +23,6 @@ export class NotificationsController {
   @UseGuards(AuthGuard('jwt'))
   @Get('user')
   async getNotificationsByUserId(@UserRequest() user: User) {
-    console.log(user);
     return {
       data: await this.notificationService.getNotificationsByUserId(user._id),
     };
