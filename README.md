@@ -12,7 +12,7 @@
 - 💖 Prettier — Format your code consistently
 - 🐶 Husky — Run scripts before they are committed
 - 🔑 RBAC — Authentication and Role Authorization starter kit
-- :satellite: Socket.io — Websocket with authentication & simple live chat demo
+- :satellite: Socket.io — Websocket with authentication, simple live chat demo, and realtime notifications
 - :mag: Cache — Redis
 - :notebook: Api Documentation — Swagger
 
