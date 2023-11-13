@@ -42,8 +42,7 @@ export class AuthService {
 
   async validateRefreshToken(user: User, compareRefreshToken: string) {
     const result =
-      (await this.userService.decrypt(user.refreshToken)) ==
-      compareRefreshToken;
+      this.userService.decrypt(user.refreshToken) == compareRefreshToken;
     if (!result) {
       throw new UnauthorizedException('Refresh token invalid');
     }

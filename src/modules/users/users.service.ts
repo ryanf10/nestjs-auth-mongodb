@@ -6,6 +6,12 @@ import { CreateUserDto } from './dto/create-user.dto';
 import { RolesService } from '../roles/roles.service';
 import * as bcrypt from 'bcrypt';
 import { JwtService } from '@nestjs/jwt';
+import * as crypto from 'crypto';
+
+import {
+  ENCRYPTION_KEY,
+  ENCRYPTION_SALT,
+} from '../../core/constants/encryption';
 @Injectable()
 export class UsersService {
   constructor(
@@ -56,7 +62,7 @@ export class UsersService {
       plainToken = this.decrypt(cipherToken);
     } catch (e) {
       plainToken = await this.newRefreshToken(id);
-      cipherToken = await this.encrypt(plainToken);
+      cipherToken = this.encrypt(plainToken);
       user.refreshToken = cipherToken;
       await user.save();
     }
@@ -64,12 +70,24 @@ export class UsersService {
   }
 
   //Encrypting text
-  encrypt(text) {
-    return text;
+  encrypt(text: string): string {
+    const derivedKey = crypto.scryptSync(ENCRYPTION_KEY, ENCRYPTION_SALT, 32);
+    const AES_KEY: Buffer = derivedKey.slice(0, 32); // 32 bytes for AES-256
+    const AES_IV: Buffer = derivedKey.slice(16, 32);
+    const cipher = crypto.createCipheriv('aes-256-cbc', AES_KEY, AES_IV);
+    let encrypted = cipher.update(text, 'utf-8', 'base64');
+    encrypted += cipher.final('base64');
+    return encrypted;
   }
 
   // Decrypting text
-  decrypt(text) {
-    return text;
+  decrypt(ciphertext: string): string {
+    const derivedKey = crypto.scryptSync(ENCRYPTION_KEY, ENCRYPTION_SALT, 32);
+    const AES_KEY: Buffer = derivedKey.slice(0, 32); // 32 bytes for AES-256
+    const AES_IV: Buffer = derivedKey.slice(16, 32);
+    const decipher = crypto.createDecipheriv('aes-256-cbc', AES_KEY, AES_IV);
+    let decrypted = decipher.update(ciphertext, 'base64', 'utf-8');
+    decrypted += decipher.final('utf-8');
+    return decrypted;
   }
 }
