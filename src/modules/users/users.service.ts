@@ -58,8 +58,8 @@ export class UsersService {
     let cipherToken = user.refreshToken;
     let plainToken = null;
     try {
-      await this.jwtService.verifyAsync(cipherToken);
       plainToken = this.decrypt(cipherToken);
+      await this.jwtService.verifyAsync(plainToken);
     } catch (e) {
       plainToken = await this.newRefreshToken(id);
       cipherToken = this.encrypt(plainToken);
