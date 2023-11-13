@@ -10,6 +10,7 @@ import { ChatModule } from './modules/chat/chat.module';
 import { NotificationsModule } from './modules/notifications/notifications.module';
 import { CommandModule } from 'nestjs-command';
 import { LoggerMiddleware } from './core/middlewares/logger.middleware';
+import { cacheModule } from './modules.config';
 
 @Module({
   imports: [
@@ -22,6 +23,7 @@ import { LoggerMiddleware } from './core/middlewares/logger.middleware';
     ChatModule,
     NotificationsModule,
     CommandModule,
+    cacheModule,
   ],
   controllers: [AppController],
   providers: [AppService],
