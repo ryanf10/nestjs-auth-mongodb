@@ -7,10 +7,11 @@ import { LocalStrategy } from './local.strategy';
 import { JwtStrategy } from './jwt.strategy';
 import { jwtModule } from '../../modules.config';
 import { NotificationsModule } from '../notifications/notifications.module';
+import { RefreshStrategy } from './refresh.strategy';
 
 @Module({
   controllers: [AuthController],
   imports: [UsersModule, PassportModule, jwtModule, NotificationsModule],
-  providers: [AuthService, LocalStrategy, JwtStrategy],
+  providers: [AuthService, LocalStrategy, JwtStrategy, RefreshStrategy],
 })
 export class AuthModule {}

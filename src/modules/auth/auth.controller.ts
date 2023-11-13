@@ -40,7 +40,7 @@ export class AuthController {
   @Post('/login')
   async login(@Request() req, @RealIP() ip: string) {
     await this.authService.sendLoginNotification(req.user, ip);
-    return { data: { token: await this.authService.login(req.user) } };
+    return { data: { ...(await this.authService.login(req.user)) } };
   }
 
   @ApiBearerAuth('JWT-auth')
@@ -56,5 +56,19 @@ export class AuthController {
   @Get('test')
   async test(@UserRequest() user: User): Promise<Response<User>> {
     return { data: user };
+  }
+
+  @ApiBearerAuth('Refresh-JWT-auth')
+  @UseGuards(AuthGuard('refresh'))
+  @Get('refresh')
+  async refresh(@Request() req) {
+    return {
+      data: {
+        ...(await this.authService.newAccessToken(
+          req.user.data,
+          req.user.refreshToken,
+        )),
+      },
+    };
   }
 }

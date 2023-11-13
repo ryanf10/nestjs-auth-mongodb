@@ -13,7 +13,7 @@ export class LocalStrategy extends PassportStrategy(Strategy) {
     const user = await this.authService.validateUser(username, password);
 
     if (!user) {
-      throw new UnauthorizedException('Unauthenticated');
+      throw new UnauthorizedException('Unknown user');
     }
     return user;
   }

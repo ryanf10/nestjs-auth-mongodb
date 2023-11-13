@@ -21,6 +21,9 @@ export class User {
   @Prop()
   password: string;
 
+  @Prop({ default: () => 'asd' })
+  refreshToken: string;
+
   @Prop({ type: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Role' }] })
   roles: Role[];
 
@@ -37,5 +40,6 @@ export const UserSchema = SchemaFactory.createForClass(User).set('toJSON', {
   transform: function (doc, ret) {
     delete ret._id;
     delete ret.password;
+    delete ret.refreshToken;
   },
 });

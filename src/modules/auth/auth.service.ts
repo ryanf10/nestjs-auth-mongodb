@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, UnauthorizedException } from '@nestjs/common';
 import { UsersService } from '../users/users.service';
 import { JwtService } from '@nestjs/jwt';
 import { User } from '../users/schemas/user.schema';
@@ -15,7 +15,7 @@ export class AuthService {
   async validateUser(email: string, password: string) {
     const user = await this.userService.findOneByEmail(email);
     if (user) {
-      const isMatch = await this.userService.comparePassword(
+      const isMatch = await this.userService.compareHash(
         password,
         user.password,
       );
@@ -27,9 +27,9 @@ export class AuthService {
   }
 
   async login(user: User) {
-    const payload = { id: user._id, roles: user.roles };
     return {
-      access_token: this.jwtService.sign(payload),
+      access_token: await this.generateAccessToken(user),
+      refresh_token: await this.userService.getOrUpdateRefreshToken(user._id),
     };
   }
 
@@ -38,5 +38,24 @@ export class AuthService {
       message: `Logged in from ${ip_address}`,
       receiver: user._id,
     });
+  }
+
+  async validateRefreshToken(user: User, compareRefreshToken: string) {
+    const result =
+      (await this.userService.decrypt(user.refreshToken)) ==
+      compareRefreshToken;
+    if (!result) {
+      throw new UnauthorizedException('Refresh token invalid');
+    }
+  }
+
+  async newAccessToken(user: User, compareRefreshToken: string) {
+    await this.validateRefreshToken(user, compareRefreshToken);
+    return { access_token: await this.generateAccessToken(user) };
+  }
+
+  async generateAccessToken(user: User) {
+    const payload = { id: user._id, roles: user.roles };
+    return await this.jwtService.signAsync(payload);
   }
 }

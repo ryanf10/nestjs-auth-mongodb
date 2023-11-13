@@ -89,7 +89,7 @@
     e.preventDefault()
 
     await axios.post('http://localhost:3000/auth/login', {email: email.value, password: password.value}).then((res) => {
-      token = res.data.data.token.access_token
+      token = res.data.data.access_token
       state = 'chat'
       initChat()
     }).catch((err) => {

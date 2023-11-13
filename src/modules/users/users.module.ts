@@ -4,6 +4,7 @@ import { UsersService } from './users.service';
 import { MongooseModule } from '@nestjs/mongoose';
 import { User, UserSchema } from './schemas/user.schema';
 import { RolesModule } from '../roles/roles.module';
+import { jwtModule } from '../../modules.config';
 
 @Module({
   imports: [
@@ -21,6 +22,7 @@ import { RolesModule } from '../roles/roles.module';
         },
       },
     ]),
+    jwtModule,
   ],
   controllers: [UsersController],
   providers: [UsersService],

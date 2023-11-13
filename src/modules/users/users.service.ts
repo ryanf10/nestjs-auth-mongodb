@@ -5,11 +5,13 @@ import { Model } from 'mongoose';
 import { CreateUserDto } from './dto/create-user.dto';
 import { RolesService } from '../roles/roles.service';
 import * as bcrypt from 'bcrypt';
+import { JwtService } from '@nestjs/jwt';
 @Injectable()
 export class UsersService {
   constructor(
     @InjectModel(User.name) private readonly user: Model<User>,
     private readonly roleService: RolesService,
+    private readonly jwtService: JwtService,
   ) {}
 
   async create(createUserDto: CreateUserDto): Promise<User> {
@@ -19,7 +21,7 @@ export class UsersService {
     }
     const createdUser = new this.user({
       email: createUserDto.email,
-      password: await this.hashPassword(createUserDto.password),
+      password: await this.hash(createUserDto.password),
       roles: [userRole],
     });
     return createdUser.save();
@@ -33,13 +35,41 @@ export class UsersService {
     return this.user.findById(id).populate('roles');
   }
 
-  async hashPassword(password: string) {
-    const hash = await bcrypt.hash(password, 10);
-    return hash;
+  async hash(value: string) {
+    return await bcrypt.hash(value, 10);
   }
 
-  async comparePassword(enteredPassword: string, dbPassword: string) {
-    const match = await bcrypt.compare(enteredPassword, dbPassword);
-    return match;
+  async compareHash(value: string, hashed: string) {
+    return await bcrypt.compare(value, hashed);
+  }
+
+  async newRefreshToken(id: string) {
+    return await this.jwtService.signAsync({ id }, { expiresIn: '15m' });
+  }
+
+  async getOrUpdateRefreshToken(id: string) {
+    const user = await this.user.findById(id);
+    let cipherToken = user.refreshToken;
+    let plainToken = null;
+    try {
+      await this.jwtService.verifyAsync(cipherToken);
+      plainToken = this.decrypt(cipherToken);
+    } catch (e) {
+      plainToken = await this.newRefreshToken(id);
+      cipherToken = await this.encrypt(plainToken);
+      user.refreshToken = cipherToken;
+      await user.save();
+    }
+    return plainToken;
+  }
+
+  //Encrypting text
+  encrypt(text) {
+    return text;
+  }
+
+  // Decrypting text
+  decrypt(text) {
+    return text;
   }
 }
