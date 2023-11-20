@@ -1,6 +1,6 @@
 import { Command } from 'nestjs-command';
 import { Injectable } from '@nestjs/common';
-import { RolesService } from '../roles.service';
+import { RolesService } from '../../user-management/services/roles.service';
 
 @Injectable()
 export class RolesSeed {

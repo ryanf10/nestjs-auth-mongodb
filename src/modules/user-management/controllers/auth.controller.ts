@@ -7,17 +7,17 @@ import {
   Request,
   UseGuards,
 } from '@nestjs/common';
-import { UsersService } from '../users/users.service';
-import { CreateUserDto } from '../users/dto/create-user.dto';
-import { Response } from '../../core/interceptors/response.interceptor';
-import { User } from '../users/schemas/user.schema';
+import { UsersService } from '../services/users.service';
+import { CreateUserDto } from '../dtos/create-user.dto';
+import { Response } from '../../../core/interceptors/response.interceptor';
+import { User } from '../schemas/user.schema';
 import { AuthGuard } from '@nestjs/passport';
-import { AuthService } from './auth.service';
-import { UserRequest } from '../../core/decorators/user-request.decorator';
-import { RolesGuard } from '../../core/guards/roles.guard';
-import { AllowedRole } from '../../core/decorators/allowed-role.decorator';
+import { AuthService } from '../services/auth.service';
+import { UserRequest } from '../../../core/decorators/user-request.decorator';
+import { RolesGuard } from '../../../core/guards/roles.guard';
+import { AllowedRole } from '../../../core/decorators/allowed-role.decorator';
 import { ApiBearerAuth, ApiBody, ApiTags } from '@nestjs/swagger';
-import { UserLoginDto } from '../users/dto/user-login.dto';
+import { UserLoginDto } from '../dtos/user-login.dto';
 import { RealIP } from 'nestjs-real-ip';
 
 @ApiTags('auth')

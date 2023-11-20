@@ -1,9 +1,9 @@
 import { Injectable, InternalServerErrorException } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
-import { User } from './schemas/user.schema';
+import { User } from '../schemas/user.schema';
 import { Model } from 'mongoose';
-import { CreateUserDto } from './dto/create-user.dto';
-import { RolesService } from '../roles/roles.service';
+import { CreateUserDto } from '../dtos/create-user.dto';
+import { RolesService } from './roles.service';
 import * as bcrypt from 'bcrypt';
 import { JwtService } from '@nestjs/jwt';
 import * as crypto from 'crypto';
@@ -11,7 +11,7 @@ import * as crypto from 'crypto';
 import {
   ENCRYPTION_KEY,
   ENCRYPTION_SALT,
-} from '../../core/constants/encryption';
+} from '../../../core/constants/encryption';
 @Injectable()
 export class UsersService {
   constructor(

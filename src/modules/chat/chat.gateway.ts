@@ -14,7 +14,7 @@ import { Server } from 'socket.io';
 import { WsGuard } from '../../core/guards/ws.guard';
 import { AllSocketExceptionFilter } from '../../core/filters/all-socket-exception.filter';
 import { UserWs } from '../../core/decorators/user-ws.decorator';
-import { User } from '../users/schemas/user.schema';
+import { User } from '../user-management/schemas/user.schema';
 import { SocketWithAuth } from '../../socket-io-adapter';
 
 @WebSocketGateway()

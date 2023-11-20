@@ -5,7 +5,7 @@ import { AuthGuard } from '@nestjs/passport';
 import { RolesGuard } from '../../core/guards/roles.guard';
 import { AllowedRole } from '../../core/decorators/allowed-role.decorator';
 import { UserRequest } from '../../core/decorators/user-request.decorator';
-import { User } from '../users/schemas/user.schema';
+import { User } from '../user-management/schemas/user.schema';
 
 @Controller('notifications')
 export class NotificationsController {

@@ -3,13 +3,11 @@ import { NotificationsGateway } from './notifications.gateway';
 import { MongooseModule } from '@nestjs/mongoose';
 import { Notification, NotificationSchema } from './schemas/notification';
 import { NotificationsService } from './notifications.service';
-import { UsersModule } from '../users/users.module';
 import { NotificationsController } from './notifications.controller';
 import { jwtModule } from '../../modules.config';
 
 @Module({
   imports: [
-    UsersModule,
     jwtModule,
     MongooseModule.forFeatureAsync([
       {

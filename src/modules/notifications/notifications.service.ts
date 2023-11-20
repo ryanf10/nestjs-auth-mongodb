@@ -3,7 +3,7 @@ import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
 import { Notification } from './schemas/notification';
 import { CreateNotificationDto } from './dto/create-notification-dto';
-import { UsersService } from '../users/users.service';
+import { UsersService } from '../user-management/services/users.service';
 import { NotificationsGateway } from './notifications.gateway';
 import * as mongoose from 'mongoose';
 

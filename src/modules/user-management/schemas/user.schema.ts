@@ -1,7 +1,7 @@
 import { Schema, Prop, SchemaFactory } from '@nestjs/mongoose';
 import { HydratedDocument } from 'mongoose';
 import * as mongoose from 'mongoose';
-import { Role } from '../../roles/schemas/role.schema';
+import { Role } from '../../user-management/schemas/role.schema';
 
 export type UserDcoument = HydratedDocument<User>;
 @Schema({ timestamps: true })
