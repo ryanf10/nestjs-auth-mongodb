@@ -19,51 +19,66 @@
 ## Installation
 
 ```bash
-$ yarn install
+yarn install
 ```
 
 ## Installation
 
 ```bash
-$ yarn husky install
-$ chmod ug+x .husky/*
+yarn husky install
+chmod ug+x .husky/*
 ```
 
 ## Running the app
 
+### development
+
 ```bash
-# development
-$ yarn run start
+yarn run start
+```
 
-# watch mode
-$ yarn run start:dev
+### watch mode
 
-# production mode
-$ yarn run start:prod
+```bash
+yarn run start:dev
+```
+
+### production mode
+
+```bash
+yarn run start:prod
 ```
 
 ## Running the app with Docker
 
-# Compose
+### Local Development
 
 ```
-    docker-compose build --no-cache
-    docker-compose up --build -d
+docker build --no-cache -f Dockerfile.local .
+docker-compose -f docker-compose.local.yml up --build -d
 ```
 
-# Accessing container shell
+### Production
 
 ```
-    docker exec -it myapp sh
+docker-compose build --no-cache
+docker-compose up --build -d
+```
+
+### Accessing container shell
+
+```
+docker exec -it myapp sh
 ```
 
 ```
-    docker exec -it redis sh
+docker exec -it redis sh
+redis-cli
 ```
 
 ```
-    docker exec -it mongodb sh
-    mongosh
+docker exec -it mongodb sh
+mongosh
 ```
 
 ## Seed role to MongoDB
@@ -82,15 +97,22 @@ http://localhost:3000
 
 ## Test
 
+### unit tests
+
 ```bash
-# unit tests
-$ yarn run test
+yarn run test
+```
 
-# e2e tests
-$ yarn run test:e2e
+### e2e tests
 
-# test coverage
-$ yarn run test:cov
+```bash
+yarn run test:e2e
+```
+
+### test coverage
+
+```bash
+yarn run test:cov
 ```
 
 ## Frontend Support
