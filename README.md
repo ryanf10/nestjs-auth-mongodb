@@ -42,6 +42,30 @@ $ yarn run start:dev
 $ yarn run start:prod
 ```
 
+## Running the app with Docker
+
+# Compose
+
+```
+    docker-compose build --no-cache
+    docker-compose up --build -d
+```
+
+# Accessing container shell
+
+```
+    docker exec -it myapp sh
+```
+
+```
+    docker exec -it redis sh
+```
+
+```
+    docker exec -it mongodb sh
+    mongosh
+```
+
 ## Seed role to MongoDB
 
 ```bash

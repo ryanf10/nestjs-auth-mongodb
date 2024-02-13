@@ -31,6 +31,6 @@ export class AppController {
   @Get('hello')
   async getHello() {
     await this.cacheManager.set('hello', 'world', { ttl: 1000 });
-    return this.appService.getHello();
+    return { data: { message: this.appService.getHello() } };
   }
 }
