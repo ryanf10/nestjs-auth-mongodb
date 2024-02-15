@@ -3,6 +3,7 @@ import { UsersService } from './users.service';
 import { JwtService } from '@nestjs/jwt';
 import { User } from '../schemas/user.schema';
 import { NotificationsService } from '../../notifications/notifications.service';
+import process from 'process';
 
 @Injectable()
 export class AuthService {
@@ -55,6 +56,8 @@ export class AuthService {
 
   async generateAccessToken(user: User) {
     const payload = { id: user._id, roles: user.roles };
-    return await this.jwtService.signAsync(payload);
+    return await this.jwtService.signAsync(payload, {
+      expiresIn: process.env.ACCESS_TOKEN_EXPIRATION,
+    });
   }
 }

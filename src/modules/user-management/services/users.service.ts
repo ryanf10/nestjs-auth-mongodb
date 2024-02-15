@@ -12,6 +12,7 @@ import {
   ENCRYPTION_KEY,
   ENCRYPTION_SALT,
 } from '../../../core/constants/encryption';
+import process from 'process';
 @Injectable()
 export class UsersService {
   constructor(
@@ -50,7 +51,10 @@ export class UsersService {
   }
 
   async newRefreshToken(id: string) {
-    return await this.jwtService.signAsync({ id }, { expiresIn: '15m' });
+    return await this.jwtService.signAsync(
+      { id },
+      { expiresIn: process.env.REFRESH_TOKEN_EXPIRATION },
+    );
   }
 
   async getOrUpdateRefreshToken(id: string) {
