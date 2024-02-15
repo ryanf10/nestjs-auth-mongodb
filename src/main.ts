@@ -10,6 +10,8 @@ import { WinstonModule } from 'nest-winston';
 import { format, transports } from 'winston';
 import * as process from 'process';
 import { SocketIOAdapter } from './socket-io-adapter';
+import bodyParser from 'body-parser';
+import mongoSanitize from 'express-mongo-sanitize';
 
 async function bootstrap() {
   const app = await NestFactory.create<NestExpressApplication>(AppModule, {
@@ -42,6 +44,12 @@ async function bootstrap() {
   });
   app.setBaseViewsDir(join(__dirname, '..', 'views'));
   app.setViewEngine('hbs');
+
+  // sanitize input
+  app.use(bodyParser.urlencoded({ extended: true }));
+  app.use(bodyParser.json());
+  app.use(mongoSanitize());
+
   app.useGlobalPipes(new ValidateInputPipe());
   app.useGlobalInterceptors(new ResponseInterceptor());
   app.useGlobalFilters(new AllHttpExceptionFilter());
