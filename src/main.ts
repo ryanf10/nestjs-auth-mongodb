@@ -14,6 +14,7 @@ import bodyParser from 'body-parser';
 import mongoSanitize from 'express-mongo-sanitize';
 import { xss } from 'express-xss-sanitizer';
 import helmet from 'helmet';
+import rateLimit from 'express-rate-limit';
 
 async function bootstrap() {
   const app = await NestFactory.create<NestExpressApplication>(AppModule, {
@@ -47,8 +48,16 @@ async function bootstrap() {
   app.setBaseViewsDir(join(__dirname, '..', 'views'));
   app.setViewEngine('hbs');
 
-  //helmet
+  // helmet
   app.use(helmet());
+
+  // rate limitter
+  app.use(
+    rateLimit({
+      windowMs: 5 * 60 * 1000, // 5 minutes in ms
+      limit: 1000,
+    }),
+  );
 
   // sanitize xss
   app.use(xss());
