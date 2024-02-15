@@ -13,6 +13,7 @@ import { SocketIOAdapter } from './socket-io-adapter';
 import bodyParser from 'body-parser';
 import mongoSanitize from 'express-mongo-sanitize';
 import { xss } from 'express-xss-sanitizer';
+import helmet from 'helmet';
 
 async function bootstrap() {
   const app = await NestFactory.create<NestExpressApplication>(AppModule, {
@@ -45,6 +46,9 @@ async function bootstrap() {
   });
   app.setBaseViewsDir(join(__dirname, '..', 'views'));
   app.setViewEngine('hbs');
+
+  //helmet
+  app.use(helmet());
 
   // sanitize xss
   app.use(xss());
