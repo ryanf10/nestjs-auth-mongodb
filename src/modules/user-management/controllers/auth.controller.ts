@@ -36,6 +36,7 @@ export class AuthController {
   }
 
   @ApiBody({ type: UserLoginDto })
+  @HttpCode(200)
   @UseGuards(AuthGuard('local'))
   @Post('/login')
   async login(@Request() req, @RealIP() ip: string) {

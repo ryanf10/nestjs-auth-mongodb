@@ -14,9 +14,19 @@ import { UserManagementModule } from './modules/user-management/user-management.
 @Module({
   imports: [
     ConfigModule.forRoot(),
-    MongooseModule.forRoot(`${process.env.MONGODB_URL}`, {
-      dbName: process.env.MONGODB_DATABASE,
-    }),
+    MongooseModule.forRoot(
+      `${
+        process.env.NODE_ENV == 'testing'
+          ? process.env.MONGODB_TESTING_URL
+          : process.env.MONGODB_URL
+      }`,
+      {
+        dbName:
+          process.env.NODE_ENV == 'testing'
+            ? process.env.MONGODB_TESTING_DATABASE
+            : process.env.MONGODB_DATABASE,
+      },
+    ),
     ChatModule,
     NotificationsModule,
     CommandModule,
