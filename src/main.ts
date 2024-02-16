@@ -16,34 +16,35 @@ import { xss } from 'express-xss-sanitizer';
 import helmet from 'helmet';
 import rateLimit from 'express-rate-limit';
 
+export const logger = WinstonModule.createLogger({
+  transports: [
+    //  Log Error
+    new transports.File({
+      filename: `logs/error.log`,
+      level: 'error',
+      format: format.combine(format.timestamp(), format.json()),
+    }),
+    // Log All
+    new transports.File({
+      filename: `logs/combined.log`,
+      format: format.combine(format.timestamp(), format.json()),
+    }),
+    // we also want to see logs in our console
+    new transports.Console({
+      format: format.combine(
+        format.cli(),
+        format.splat(),
+        format.timestamp(),
+        format.printf((info) => {
+          return `${info.timestamp} ${info.level} [${info.context}]: ${info.message}`;
+        }),
+      ),
+    }),
+  ],
+});
 async function bootstrap() {
   const app = await NestFactory.create<NestExpressApplication>(AppModule, {
-    logger: WinstonModule.createLogger({
-      transports: [
-        //  Log Error
-        new transports.File({
-          filename: `logs/error.log`,
-          level: 'error',
-          format: format.combine(format.timestamp(), format.json()),
-        }),
-        // Log All
-        new transports.File({
-          filename: `logs/combined.log`,
-          format: format.combine(format.timestamp(), format.json()),
-        }),
-        // we also want to see logs in our console
-        new transports.Console({
-          format: format.combine(
-            format.cli(),
-            format.splat(),
-            format.timestamp(),
-            format.printf((info) => {
-              return `${info.timestamp} ${info.level} [${info.context}]: ${info.message}`;
-            }),
-          ),
-        }),
-      ],
-    }),
+    logger: logger,
   });
   app.setBaseViewsDir(join(__dirname, '..', 'views'));
   app.setViewEngine('hbs');

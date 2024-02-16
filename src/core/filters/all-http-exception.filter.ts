@@ -6,6 +6,8 @@ import {
 } from '@nestjs/common';
 import { Request, Response } from 'express';
 import get from 'lodash.get';
+import { logger } from '../../main';
+import process from 'process';
 
 @Catch()
 export class AllHttpExceptionFilter implements ExceptionFilter {
@@ -53,11 +55,20 @@ export class AllHttpExceptionFilter implements ExceptionFilter {
         path: request.url,
         messages: [
           {
-            name: exception.message,
-            errors: [exception.message],
+            name: 'Internal Server Error',
+            errors:
+              process.env.NODE_ENV == 'production'
+                ? ['Internal Server Error']
+                : [exception.message],
           },
         ],
       });
+      // log internal server error
+      logger.error(
+        exception.message,
+        exception.stack,
+        exception.constructor.name,
+      );
     }
   }
 }
