@@ -17,6 +17,7 @@
 - 📃 Api Documentation — Swagger
 - ⛵ Docker — Alpine, Redis, MongoDB
 - 📕 Logger — Winston
+- 🔚 End to End Testing — Perform end to end testing with different environment
 
 ## Installation
 
