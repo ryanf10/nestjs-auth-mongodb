@@ -7,21 +7,31 @@ on:
     branches: [ master ]
 
 jobs:
-  build:
+  test-and-build:
 
     runs-on: ubuntu-latest
 
     strategy:
       matrix:
-        node-version: [18.x]
+        node-version: [ 18.x ]
 
     steps:
-      - uses: actions/checkout@v3
+      - name: Checkout Repository
+        uses: actions/checkout@v3
+
       - name: Use Node.js ${{ matrix.node-version }}
         uses: actions/setup-node@v3
         with:
           node-version: ${{ matrix.node-version }}
-      - run: npm install --global yarn
-      - run: yarn
-      - run: yarn test --forceExit
-      - run: yarn build
+
+      - name: Install Yarn
+        run: npm install --global yarn
+
+      - name: Install Dependencies
+        run: yarn
+
+      - name: Unit Test
+        run: yarn test --forceExit
+
+      - name: Build
+        run: yarn build
