@@ -40,7 +40,8 @@ export class ChatService {
           },
         ],
       })
-      .populate(['user1', 'user2']);
+      .populate('user1', ['-email', '-roles'])
+      .populate('user2', ['-email', '-roles']);
   }
 
   async getChatByUserId(userId: string) {
@@ -52,10 +53,14 @@ export class ChatService {
         ],
       })
       .sort({ lastMessageAt: 'desc' })
-      .populate(['user1', 'user2']);
+      .populate('user1', ['-email', '-roles'])
+      .populate('user2', ['-email', '-roles']);
   }
 
   async getChatById(id: mongoose.Types.ObjectId) {
-    return this.chat.findById(id).populate(['user1', 'user2']);
+    return this.chat
+      .findById(id)
+      .populate('user1', ['-email', '-roles'])
+      .populate('user2', ['-email', '-roles']);
   }
 }

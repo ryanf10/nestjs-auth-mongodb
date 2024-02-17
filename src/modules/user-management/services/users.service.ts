@@ -75,12 +75,14 @@ export class UsersService {
   }
 
   async search(value: string) {
-    return this.user.find({
-      $or: [
-        { email: { $regex: value, $options: 'i' } },
-        { username: { $regex: value, $options: 'i' } },
-      ],
-    });
+    return this.user
+      .find({
+        $or: [
+          { email: { $regex: value, $options: 'i' } },
+          { username: { $regex: value, $options: 'i' } },
+        ],
+      })
+      .select(['-email', '-roles']);
   }
 
   //Encrypting text
