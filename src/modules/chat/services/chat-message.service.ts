@@ -75,6 +75,7 @@ export class ChatMessageService {
       .find({
         chatId: new mongoose.Types.ObjectId(chatId),
       })
+      .populate('sender', ['-email', '-roles'])
       .sort({ createdAt: 'asc' });
   }
 }
