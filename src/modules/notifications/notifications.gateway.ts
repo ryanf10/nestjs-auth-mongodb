@@ -45,7 +45,6 @@ export class NotificationsGateway
   }
 
   async sendNotification(notification: Notification) {
-    console.log(this.io.sockets.sockets);
     for (const [, client] of this.io.sockets.sockets) {
       if (
         (client as SocketWithAuth).user._id.toString() ==

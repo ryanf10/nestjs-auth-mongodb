@@ -8,6 +8,7 @@ export const jwtModule = JwtModule.registerAsync({
     secret: configService.get<string>('JWT_SECRET'),
   }),
   inject: [ConfigService],
+  global: true,
 });
 
 export const cacheModule = CacheModule.registerAsync({

@@ -1,7 +1,6 @@
 import { Global, Module } from '@nestjs/common';
 import { AuthController } from './controllers/auth.controller';
 import { PassportModule } from '@nestjs/passport';
-import { jwtModule } from '../../modules.config';
 import { NotificationsModule } from '../notifications/notifications.module';
 import { AuthService } from './services/auth.service';
 import { LocalStrategy } from './strategies/local.strategy';
@@ -18,7 +17,6 @@ import { UsersService } from './services/users.service';
   controllers: [AuthController],
   imports: [
     PassportModule,
-    jwtModule,
     NotificationsModule,
     MongooseModule.forFeatureAsync([
       {

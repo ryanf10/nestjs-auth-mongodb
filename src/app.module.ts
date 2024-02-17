@@ -8,7 +8,7 @@ import { GlobalChatModule } from './modules/global-chat/global-chat.module';
 import { NotificationsModule } from './modules/notifications/notifications.module';
 import { CommandModule } from 'nestjs-command';
 import { LoggerMiddleware } from './core/middlewares/logger.middleware';
-import { cacheModule } from './modules.config';
+import { cacheModule, jwtModule } from './modules.config';
 import { UserManagementModule } from './modules/user-management/user-management.module';
 
 @Module({
@@ -32,6 +32,7 @@ import { UserManagementModule } from './modules/user-management/user-management.
     CommandModule,
     cacheModule,
     UserManagementModule,
+    jwtModule,
   ],
   controllers: [AppController],
   providers: [AppService],
