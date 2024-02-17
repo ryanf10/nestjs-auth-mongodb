@@ -12,9 +12,10 @@ import { RolesService } from './services/roles.service';
 import { RolesSeed } from './seeds/roles.seed';
 import { User, UserSchema } from './schemas/user.schema';
 import { UsersService } from './services/users.service';
+import { UserController } from './controllers/user.controller';
 @Global()
 @Module({
-  controllers: [AuthController],
+  controllers: [AuthController, UserController],
   imports: [
     PassportModule,
     NotificationsModule,

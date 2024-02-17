@@ -17,6 +17,7 @@ describe('User Management (e2e)', () => {
   });
 
   const user = {
+    username: faker.internet.userName(),
     email: faker.internet.email(),
     password: faker.internet.password(),
     profile: {
@@ -33,7 +34,11 @@ describe('User Management (e2e)', () => {
   it('POST /auth/register', () => {
     return request(app.getHttpServer())
       .post('/auth/register')
-      .send({ email: user.email, password: user.password })
+      .send({
+        email: user.email,
+        username: user.username,
+        password: user.password,
+      })
       .expect(200)
       .expect((response) => {
         const { email } = response.body.data;

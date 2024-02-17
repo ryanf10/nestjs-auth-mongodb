@@ -27,6 +27,7 @@ export class UsersService {
       throw new InternalServerErrorException('cannot assign role');
     }
     const createdUser = new this.user({
+      username: createUserDto.username,
       email: createUserDto.email,
       password: await this.hash(createUserDto.password),
       roles: [userRole],
@@ -71,6 +72,15 @@ export class UsersService {
       await user.save();
     }
     return plainToken;
+  }
+
+  async search(value: string) {
+    return this.user.find({
+      $or: [
+        { email: { $regex: value, $options: 'i' } },
+        { username: { $regex: value, $options: 'i' } },
+      ],
+    });
   }
 
   //Encrypting text

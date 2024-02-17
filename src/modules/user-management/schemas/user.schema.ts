@@ -16,6 +16,12 @@ export class User {
     unique: true,
     uniqueCaseInsensitive: true,
   })
+  username: string;
+
+  @Prop({
+    unique: true,
+    uniqueCaseInsensitive: true,
+  })
   email: string;
 
   @Prop()
