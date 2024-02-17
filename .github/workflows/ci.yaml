@@ -15,6 +15,30 @@ jobs:
       matrix:
         node-version: [ 18.x ]
 
+    services:
+      mongodb:
+        image: mongo
+        ports:
+          - 27017:27017
+        options: --name mongodb
+      redis:
+        image: redis
+        ports:
+          - 6379:6379
+        options: --name redis
+
+    env:
+      NODE_ENV: testing
+      MONGODB_TESTING_URL: mongodb://0.0.0.0:27017
+      MONGODB_TESTING_DATABASE: nestjsauth_testing
+      REDIS_HOST: 0.0.0.0
+      REDIS_PORT: 6379
+      JWT_SECRET: secret
+      ENCRYPTION_SALT: secret
+      ENCRYPTION_KEY: verySecret
+      ACCESS_TOKEN_EXPIRATION: 60m
+      REFRESH_TOKEN_EXPIRATION: 30d
+
     steps:
       - name: Checkout Repository
         uses: actions/checkout@v3
@@ -32,6 +56,12 @@ jobs:
 
       - name: Unit Test
         run: yarn test --forceExit
+
+      - name: Install Cross Env
+        run: npm install --global cross-env
+
+      - name: Run End-to-End Tests
+        run: yarn test:e2e --forceExit --verbose
 
       - name: Build
         run: yarn build

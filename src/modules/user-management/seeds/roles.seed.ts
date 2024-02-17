@@ -19,5 +19,6 @@ export class RolesSeed {
     });
     console.log(user);
     console.log(admin);
+    process.exit(0);
   }
 }
