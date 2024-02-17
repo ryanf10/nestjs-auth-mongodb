@@ -10,6 +10,7 @@ import { CommandModule } from 'nestjs-command';
 import { LoggerMiddleware } from './core/middlewares/logger.middleware';
 import { cacheModule, jwtModule } from './modules.config';
 import { UserManagementModule } from './modules/user-management/user-management.module';
+import { ChatModule } from './modules/chat/chat.module';
 
 @Module({
   imports: [
@@ -33,6 +34,7 @@ import { UserManagementModule } from './modules/user-management/user-management.
     cacheModule,
     UserManagementModule,
     jwtModule,
+    ChatModule,
   ],
   controllers: [AppController],
   providers: [AppService],
