@@ -108,6 +108,7 @@
   let socket = null
   const initChat = () => {
     const options = {
+      path: '/global-chat/socket.io',
       transportOptions: {
         polling: {
           extraHeaders: {

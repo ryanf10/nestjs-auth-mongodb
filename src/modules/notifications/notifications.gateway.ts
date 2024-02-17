@@ -15,6 +15,7 @@ import { Notification } from './schemas/notification';
   cors: {
     origin: '*',
   },
+  path: '/notifications/socket.io',
 })
 export class NotificationsGateway
   implements OnGatewayInit, OnGatewayConnection, OnGatewayDisconnect
@@ -44,6 +45,7 @@ export class NotificationsGateway
   }
 
   async sendNotification(notification: Notification) {
+    console.log(this.io.sockets.sockets);
     for (const [, client] of this.io.sockets.sockets) {
       if (
         (client as SocketWithAuth).user._id.toString() ==

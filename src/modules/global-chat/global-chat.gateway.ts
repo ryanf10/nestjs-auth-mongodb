@@ -17,12 +17,17 @@ import { UserWs } from '../../core/decorators/user-ws.decorator';
 import { User } from '../user-management/schemas/user.schema';
 import { SocketWithAuth } from '../../socket-io-adapter';
 
-@WebSocketGateway()
+@WebSocketGateway({
+  cors: {
+    origin: '*',
+  },
+  path: '/global-chat/socket.io',
+})
 @UseFilters(AllSocketExceptionFilter)
-export class ChatGateway
+export class GlobalChatGateway
   implements OnGatewayInit, OnGatewayConnection, OnGatewayDisconnect
 {
-  private readonly logger = new Logger(ChatGateway.name);
+  private readonly logger = new Logger(GlobalChatGateway.name);
 
   @WebSocketServer() private readonly io: Server;
 
