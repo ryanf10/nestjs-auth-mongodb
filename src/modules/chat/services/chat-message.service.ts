@@ -12,6 +12,7 @@ import { CreateMessageDto } from '../dto/create-message-dto';
 import { ChatService } from './chat.service';
 import { UsersService } from '../../user-management/services/users.service';
 import { User } from '../../user-management/schemas/user.schema';
+import { ChatGateway } from '../chat.gateway';
 
 @Injectable()
 export class ChatMessageService {
@@ -20,6 +21,7 @@ export class ChatMessageService {
     private readonly chatMessage: Model<ChatMessage>,
     private readonly chatService: ChatService,
     private readonly usersService: UsersService,
+    private readonly chatGateway: ChatGateway,
   ) {}
   async createMessage(createMessageDto: CreateMessageDto, user: User) {
     // throw error if send to itself
@@ -53,6 +55,9 @@ export class ChatMessageService {
     chat.lastMessage = chatMessage.message;
     chat.lastMessageAt = chatMessage.createdAt;
     chat.save();
+
+    this.chatGateway.sendChatUpdate(chat);
+    this.chatGateway.sendChatMessageUpdate(chatMessage, receiver);
 
     return chatMessage;
   }
