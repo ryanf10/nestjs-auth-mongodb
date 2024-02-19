@@ -1,10 +1,4 @@
-import {
-  Controller,
-  Get,
-  Inject,
-  Render,
-  UseInterceptors,
-} from '@nestjs/common';
+import { Controller, Get, Inject, UseInterceptors } from '@nestjs/common';
 import { AppService } from './app.service';
 import {
   CACHE_MANAGER,
@@ -21,9 +15,8 @@ export class AppController {
   ) {}
 
   @Get()
-  @Render('index')
   root() {
-    return { message: 'Hello world!' };
+    return { data: { message: 'Hello world!' } };
   }
 
   @UseInterceptors(CacheInterceptor)
