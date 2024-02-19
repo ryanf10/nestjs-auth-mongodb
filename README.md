@@ -12,7 +12,9 @@
 - 💖 Prettier — Format your code consistently
 - 🐶 Husky — Run scripts before they are committed
 - 🔑 RBAC — Authentication and Role Authorization starter kit
-- 📡 Socket.io — Websocket with authentication, simple live chat demo, and realtime notifications
+- ☁️ Chat —
+- 📡 Socket.io — Websocket with authentication and realtime notifications
+- ☁️ Chat — Implement a robust real-time chat feature using Socket.io, allowing seamless communication between users with authentication.
 - 🔍 Cache — Redis
 - 📃 Api Documentation — Swagger
 - ⛵ Docker — Alpine, Redis, MongoDB
