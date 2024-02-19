@@ -4,7 +4,6 @@ import { ValidateInputPipe } from './core/pipes/validate-input.pipe';
 import { ResponseInterceptor } from './core/interceptors/response.interceptor';
 import { AllHttpExceptionFilter } from './core/filters/all-http-exception.filter';
 import { NestExpressApplication } from '@nestjs/platform-express';
-import { join } from 'path';
 import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
 import { WinstonModule } from 'nest-winston';
 import { format, transports } from 'winston';
@@ -46,8 +45,9 @@ async function bootstrap() {
   const app = await NestFactory.create<NestExpressApplication>(AppModule, {
     logger: logger,
   });
-  app.setBaseViewsDir(join(__dirname, '..', 'views'));
-  app.setViewEngine('hbs');
+
+  // app.setBaseViewsDir(join(__dirname, '..', 'views'));
+  // app.setViewEngine('hbs');
 
   // helmet
   app.use(helmet());

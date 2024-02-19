@@ -4,7 +4,6 @@ import { AppService } from './app.service';
 import { MongooseModule } from '@nestjs/mongoose';
 import * as process from 'process';
 import { ConfigModule } from '@nestjs/config';
-import { GlobalChatModule } from './modules/global-chat/global-chat.module';
 import { NotificationsModule } from './modules/notifications/notifications.module';
 import { CommandModule } from 'nestjs-command';
 import { LoggerMiddleware } from './core/middlewares/logger.middleware';
@@ -28,7 +27,6 @@ import { ChatModule } from './modules/chat/chat.module';
             : process.env.MONGODB_DATABASE,
       },
     ),
-    GlobalChatModule,
     NotificationsModule,
     CommandModule,
     cacheModule,
