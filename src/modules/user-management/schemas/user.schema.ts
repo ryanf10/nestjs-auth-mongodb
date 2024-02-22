@@ -27,6 +27,9 @@ export class User {
   @Prop()
   password: string;
 
+  @Prop()
+  picture?: string | null;
+
   @Prop({ default: () => 'asd' })
   refreshToken: string;
 

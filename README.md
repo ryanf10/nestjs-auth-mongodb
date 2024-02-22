@@ -91,6 +91,25 @@ mongosh
 yarn nestjs-command seed:role
 ```
 
+## File Storage
+
+- Local (Set Storage to 'local' in .env)
+
+```
+STORAGE=local
+S3_ENDPOINT_URL=https://sgp1.digitaloceanspaces.com/
+S3_DOWNLOAD_URL=https://<your-bucket>.sgp1.digitaloceanspaces.com/
+S3_BUCKET=<your-bucket>
+S3_ACCESS_KEY_ID=<your-access-key>
+S3_SECRET_KEY=<your-secret-key>
+```
+
+- S3 (Set Storage to 's3' in .env)
+
+```
+STORAGE=s3
+```
+
 ## API Documentation
 
 http://localhost:3000/swagger

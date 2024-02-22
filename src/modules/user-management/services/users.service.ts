@@ -13,6 +13,8 @@ import {
   ENCRYPTION_SALT,
 } from '../../../core/constants/encryption';
 import process from 'process';
+import { UpdateProfileDto } from '../dtos/update-profile.dto';
+import { getFileExtension, uploader } from '../../../core/uploader/uploader';
 @Injectable()
 export class UsersService {
   constructor(
@@ -83,6 +85,25 @@ export class UsersService {
         ],
       })
       .select(['-email', '-roles']);
+  }
+
+  async updateProfile(
+    picture: Express.Multer.File,
+    updateProfileDto: UpdateProfileDto,
+    user: User,
+  ) {
+    const userData = await this.user.findById(user._id);
+
+    const uploadRes = await uploader(
+      picture,
+      'profile/picture/',
+      `${user._id}-${new Date().getTime().toString()}${getFileExtension(
+        picture,
+      )}`,
+    );
+    userData.picture = `${uploadRes}`;
+    userData.save();
+    return userData;
   }
 
   //Encrypting text
