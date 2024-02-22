@@ -46,3 +46,19 @@ export const uploader = async (
 export const getFileExtension = (file: Express.Multer.File): string => {
   return path.extname(file.originalname);
 };
+
+export const getContentType = (filename: string): string => {
+  const ext = path.extname(filename).toLowerCase();
+  switch (ext) {
+    case '.pdf':
+      return 'application/pdf';
+    case '.png':
+      return 'image/png';
+    case '.jpg':
+    case '.jpeg':
+      return 'image/jpeg';
+    // Add more cases for other file types as needed
+    default:
+      return 'application/octet-stream'; // Default to binary if content type is unknown
+  }
+};

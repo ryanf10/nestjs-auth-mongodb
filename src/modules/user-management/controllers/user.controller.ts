@@ -24,6 +24,7 @@ import { User } from '../schemas/user.schema';
 import path from 'path';
 import * as fs from 'fs';
 import { Response } from 'express';
+import { getContentType } from '../../../core/uploader/uploader';
 
 @ApiTags('User')
 @Controller('user')
@@ -85,8 +86,8 @@ export class UserController {
     }
 
     // Set the appropriate headers for the file download
-    res.setHeader('Content-Disposition', `attachment; filename="${filename}"`);
-    res.setHeader('Content-Type', 'application/octet-stream');
+    res.setHeader('Content-Type', getContentType(filename));
+    res.setHeader('Cross-Origin-Resource-Policy', 'cross-origin');
 
     // Create a read stream to the file and pipe it to the response object
     const fileStream = fs.createReadStream(fullPath);
