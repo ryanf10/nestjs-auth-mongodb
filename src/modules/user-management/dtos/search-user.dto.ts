@@ -1,6 +1,3 @@
-import { ApiProperty } from '@nestjs/swagger';
+import { PaginationDto } from '../../../core/builder/pagination.dto';
 
-export class SearchUserDto {
-  @ApiProperty()
-  keyword: string;
-}
+export class SearchUserDto extends PaginationDto {}

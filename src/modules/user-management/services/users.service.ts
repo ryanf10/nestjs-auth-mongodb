@@ -15,6 +15,9 @@ import {
 import process from 'process';
 import { UpdateProfileDto } from '../dtos/update-profile.dto';
 import { getFileExtension, uploader } from '../../../core/uploader/uploader';
+import { PaginationBuilder } from '../../../core/builder/pagination';
+import { SearchUserDto } from '../dtos/search-user.dto';
+
 @Injectable()
 export class UsersService {
   constructor(
@@ -76,15 +79,21 @@ export class UsersService {
     return plainToken;
   }
 
-  async search(value: string) {
-    return this.user
-      .find({
-        $or: [
-          { email: { $regex: value, $options: 'i' } },
-          { username: { $regex: value, $options: 'i' } },
-        ],
-      })
-      .select(['-email', '-roles']);
+  async search(searchUserDto: SearchUserDto) {
+    return await PaginationBuilder(
+      this.user
+        .find(
+          searchUserDto.keyword && {
+            $or: [
+              { email: { $regex: searchUserDto.keyword, $options: 'i' } },
+              { username: { $regex: searchUserDto.keyword, $options: 'i' } },
+            ],
+          },
+        )
+        .select(['-email', '-roles']),
+      'users',
+      searchUserDto,
+    );
   }
 
   async updateProfile(

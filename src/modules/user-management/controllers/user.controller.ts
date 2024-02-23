@@ -34,9 +34,9 @@ export class UserController {
   @ApiBearerAuth('JWT-auth')
   @HttpCode(200)
   @Get('/search')
-  @UseGuards(AuthGuard('jwt'))
+  // @UseGuards(AuthGuard('jwt'))
   async search(@Query() query: SearchUserDto) {
-    return { data: await this.usersService.search(query.keyword) };
+    return { data: await this.usersService.search(query) };
   }
 
   @ApiBearerAuth('JWT-auth')
