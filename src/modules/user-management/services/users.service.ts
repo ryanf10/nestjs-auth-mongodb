@@ -17,6 +17,7 @@ import { UpdateProfileDto } from '../dtos/update-profile.dto';
 import { getFileExtension, uploader } from '../../../core/uploader/uploader';
 import { PaginationBuilder } from '../../../core/builder/pagination';
 import { SearchUserDto } from '../dtos/search-user.dto';
+import { GetAllUserDto } from '../dtos/get-all-user.dto';
 
 @Injectable()
 export class UsersService {
@@ -93,6 +94,28 @@ export class UsersService {
         .select(['-email', '-roles']),
       'users',
       searchUserDto,
+    );
+  }
+
+  async getAll(getAllUserDto: GetAllUserDto) {
+    const filter = {};
+
+    if (getAllUserDto.keyword) {
+      filter['$or'] = [
+        { email: { $regex: getAllUserDto.keyword, $options: 'i' } },
+        { username: { $regex: getAllUserDto.keyword, $options: 'i' } },
+      ];
+    }
+    if (getAllUserDto.role) {
+      const roles = await this.roleService.getRoleInNameArray(
+        getAllUserDto.role.split(','),
+      );
+      filter['roles'] = { $in: roles.map((role) => role._id) };
+    }
+    return await PaginationBuilder(
+      this.user.find(filter).populate('roles'),
+      'users',
+      getAllUserDto,
     );
   }
 

@@ -21,4 +21,8 @@ export class RolesService {
   async getRoleByName(name: string): Promise<Role> {
     return this.role.findOne({ name: name });
   }
+
+  async getRoleInNameArray(names: Array<string>): Promise<Role[]> {
+    return this.role.find({ name: { $in: names } });
+  }
 }

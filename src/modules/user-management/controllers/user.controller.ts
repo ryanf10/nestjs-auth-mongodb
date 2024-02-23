@@ -25,6 +25,9 @@ import path from 'path';
 import * as fs from 'fs';
 import { Response } from 'express';
 import { getContentType } from '../../../core/uploader/uploader';
+import { RolesGuard } from '../../../core/guards/roles.guard';
+import { AllowedRole } from '../../../core/decorators/allowed-role.decorator';
+import { GetAllUserDto } from '../dtos/get-all-user.dto';
 
 @ApiTags('User')
 @Controller('user')
@@ -34,9 +37,18 @@ export class UserController {
   @ApiBearerAuth('JWT-auth')
   @HttpCode(200)
   @Get('/search')
-  // @UseGuards(AuthGuard('jwt'))
+  @UseGuards(AuthGuard('jwt'))
   async search(@Query() query: SearchUserDto) {
     return { data: await this.usersService.search(query) };
+  }
+
+  @ApiBearerAuth('JWT-auth')
+  @HttpCode(200)
+  @Get('/all')
+  @UseGuards(AuthGuard('jwt'), RolesGuard)
+  @AllowedRole(['admin'])
+  async getAll(@Query() query: GetAllUserDto) {
+    return { data: await this.usersService.getAll(query) };
   }
 
   @ApiBearerAuth('JWT-auth')
