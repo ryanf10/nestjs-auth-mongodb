@@ -21,8 +21,12 @@ export const PaginationBuilder = async <T>(
   const total = await query.clone().countDocuments().exec();
   const result = {
     total: total,
-    page: page ? Number(page) : total,
-    page_size: page_size ? Number(page_size) : total,
+    page: page ? (Number(page) > 0 ? Number(page) : 1) : 1,
+    page_size: page_size
+      ? Number(page_size) > 0
+        ? Number(page_size)
+        : total
+      : total,
     keyword: keyword && keyword.length > 0 ? keyword : undefined,
     sort_name: sort_name && sort_name.length > 0 ? sort_name : undefined,
     sort_type: sort_name ? sort_type : undefined,
