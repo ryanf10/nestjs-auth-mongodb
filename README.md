@@ -12,10 +12,11 @@
 - 💖 Prettier — Format your code consistently
 - 🐶 Husky — Run scripts before they are committed
 - 🔑 RBAC — Authentication and Role Authorization starter kit
+- 📃 Pagination — Built-in pagination builder
 - 📡 Socket.io — Websocket with authentication and realtime notifications
 - ☁️ Chat — Implement a robust real-time chat feature using Socket.io, allowing seamless communication between users.
 - 🔍 Cache — Redis
-- 📃 Api Documentation — Swagger
+- 📄 Api Documentation — Swagger
 - ⛵ Docker — Alpine, Redis, MongoDB
 - 📕 Logger — Winston
 - 🔚 End to End Testing — Perform end to end testing with different environment
