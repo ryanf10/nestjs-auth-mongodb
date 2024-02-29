@@ -30,7 +30,7 @@ export class User {
   @Prop()
   picture?: string | null;
 
-  @Prop({ default: () => 'asd' })
+  @Prop()
   refreshToken: string;
 
   @Prop({ type: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Role' }] })
