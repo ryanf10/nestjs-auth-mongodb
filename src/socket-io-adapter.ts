@@ -29,6 +29,7 @@ export class SocketIOAdapter extends IoAdapter {
 
     const optionsWithCORS: ServerOptions = {
       ...options,
+      cookie: true,
       cors,
     };
 
