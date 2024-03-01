@@ -46,8 +46,7 @@ const createTokenMiddleware =
   (jwtService: JwtService, usersService: UsersService, logger: Logger) =>
   async (socket: SocketWithAuth, next) => {
     try {
-      const token = socket.handshake.headers.authorization.split(' ')[1];
-
+      const token = socket.handshake.auth.Authorization.split(' ')[1];
       logger.debug(`Validating auth token before connection: ${token}`);
       const payload = jwtService.verify(token);
       const user = await usersService.findOneById(payload.id);

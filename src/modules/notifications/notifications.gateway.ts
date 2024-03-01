@@ -16,6 +16,7 @@ import { Notification } from './schemas/notification';
     origin: '*',
   },
   path: '/notifications/socket.io',
+  transports: ['websocket'],
 })
 export class NotificationsGateway
   implements OnGatewayInit, OnGatewayConnection, OnGatewayDisconnect

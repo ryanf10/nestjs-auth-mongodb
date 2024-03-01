@@ -18,6 +18,7 @@ import { User } from '../user-management/schemas/user.schema';
     origin: '*',
   },
   path: '/chat/socket.io',
+  transports: ['websocket'],
 })
 export class ChatGateway
   implements OnGatewayInit, OnGatewayConnection, OnGatewayDisconnect
