@@ -16,7 +16,7 @@ export const PaginationBuilder = async <T>(
     .clone()
     .collation({ locale: 'en' }) // for case insensitive
     .sort(sort)
-    .skip(page_size * (page - 1))
+    .skip(page_size && page ? page_size * (page - 1) : 0)
     .limit(page_size);
   const total = await query.clone().countDocuments().exec();
   const result = {
