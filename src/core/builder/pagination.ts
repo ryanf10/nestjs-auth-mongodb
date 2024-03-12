@@ -31,6 +31,6 @@ export const PaginationBuilder = async <T>(
     sort_name: sort_name && sort_name.length > 0 ? sort_name : undefined,
     sort_type: sort_name ? sort_type : undefined,
   };
-  result[arrayFieldName] = data;
+  result[arrayFieldName] = data ?? [];
   return result;
 };
