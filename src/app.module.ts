@@ -10,6 +10,7 @@ import { LoggerMiddleware } from './core/middlewares/logger.middleware';
 import { cacheModule, jwtModule } from './modules.config';
 import { UserManagementModule } from './modules/user-management/user-management.module';
 import { ChatModule } from './modules/chat/chat.module';
+import { HealthModule } from './modules/health/health.module';
 
 @Module({
   imports: [
@@ -33,6 +34,7 @@ import { ChatModule } from './modules/chat/chat.module';
     UserManagementModule,
     jwtModule,
     ChatModule,
+    HealthModule,
   ],
   controllers: [AppController],
   providers: [AppService],
