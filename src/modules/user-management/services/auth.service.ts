@@ -4,6 +4,7 @@ import { JwtService } from '@nestjs/jwt';
 import { User } from '../schemas/user.schema';
 import { NotificationsService } from '../../notifications/notifications.service';
 import process from 'process';
+import { Response as ExpressResponse } from 'express';
 
 @Injectable()
 export class AuthService {
@@ -41,16 +42,30 @@ export class AuthService {
     });
   }
 
-  async validateRefreshToken(user: User, compareRefreshToken: string) {
+  async validateRefreshToken(
+    user: User,
+    compareRefreshToken: string,
+    res: ExpressResponse,
+  ) {
     const result =
       this.userService.decrypt(user.refreshToken) == compareRefreshToken;
     if (!result) {
+      await this.clearCookies(res);
       throw new UnauthorizedException('Refresh token invalid');
     }
   }
 
-  async newAccessToken(user: User, compareRefreshToken: string) {
-    await this.validateRefreshToken(user, compareRefreshToken);
+  async clearCookies(res: ExpressResponse) {
+    res.clearCookie('access_token', { httpOnly: true, signed: true });
+    res.clearCookie('refresh_token', { httpOnly: true, signed: true });
+  }
+
+  async newAccessToken(
+    user: User,
+    compareRefreshToken: string,
+    res: ExpressResponse,
+  ) {
+    await this.validateRefreshToken(user, compareRefreshToken, res);
     return { access_token: await this.generateAccessToken(user) };
   }
 

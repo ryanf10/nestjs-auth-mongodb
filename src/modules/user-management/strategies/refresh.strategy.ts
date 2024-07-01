@@ -24,7 +24,7 @@ export class RefreshStrategy extends PassportStrategy(Strategy, 'refresh') {
     }
     return {
       data: user,
-      refreshToken: req.cookies['refresh_token'],
+      refreshToken: req.signedCookies['refresh_token'],
     };
   }
 }

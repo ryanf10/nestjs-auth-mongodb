@@ -57,11 +57,13 @@ export class AuthController {
     res.cookie('access_token', data.access_token, {
       httpOnly: true,
       signed: true,
+      maxAge: 30 * 24 * 60 * 60 * 1000,
     });
 
     res.cookie('refresh_token', data.refresh_token, {
       httpOnly: true,
       signed: true,
+      maxAge: 30 * 24 * 60 * 60 * 1000,
     });
     return { data };
   }
@@ -91,10 +93,12 @@ export class AuthController {
     const data = await this.authService.newAccessToken(
       req.user.data,
       req.user.refreshToken,
+      res,
     );
     res.cookie('access_token', data.access_token, {
       httpOnly: true,
       signed: true,
+      maxAge: 30 * 24 * 60 * 60 * 1000,
     });
     return {
       data,
@@ -103,10 +107,8 @@ export class AuthController {
 
   @Post('logout')
   async logout(@Res({ passthrough: true }) res: ExpressResponse) {
-    console.log('woi');
     //delete cookie
-    res.cookie('access_token', '', { expires: new Date(0), httpOnly: true });
-    res.cookie('refresh_token', '', { expires: new Date(0), httpOnly: true });
+    await this.authService.clearCookies(res);
     return {
       data: { success: true },
     };
