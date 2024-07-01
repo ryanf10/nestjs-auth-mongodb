@@ -1,4 +1,4 @@
-import { ExtractJwt, Strategy } from 'passport-jwt';
+import { Strategy } from 'passport-jwt';
 import { PassportStrategy } from '@nestjs/passport';
 import { Injectable, UnauthorizedException } from '@nestjs/common';
 import { Request } from 'express';
@@ -7,7 +7,10 @@ import { UsersService } from '../services/users.service';
 export class RefreshStrategy extends PassportStrategy(Strategy, 'refresh') {
   constructor(private readonly userService: UsersService) {
     super({
-      jwtFromRequest: ExtractJwt.fromAuthHeaderAsBearerToken(),
+      jwtFromRequest: (req) => {
+        if (!req || !req.cookies) return null;
+        return req.signedCookies['refresh_token'];
+      },
       ignoreExpiration: false,
       secretOrKey: 'secret',
       passReqToCallback: true,
@@ -21,7 +24,7 @@ export class RefreshStrategy extends PassportStrategy(Strategy, 'refresh') {
     }
     return {
       data: user,
-      refreshToken: req.get('Authorization').replace('Bearer', '').trim(),
+      refreshToken: req.cookies['refresh_token'],
     };
   }
 }

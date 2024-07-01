@@ -5,7 +5,8 @@ import { IoAdapter } from '@nestjs/platform-socket.io';
 import { Server, ServerOptions, Socket } from 'socket.io';
 import { UsersService } from './modules/user-management/services/users.service';
 import { User } from './modules/user-management/schemas/user.schema';
-
+import * as cookie from 'cookie';
+import * as cookieParser from 'cookie-parser';
 export type SocketWithAuth = {
   user: User;
 } & Socket;
@@ -47,13 +48,24 @@ const createTokenMiddleware =
   (jwtService: JwtService, usersService: UsersService, logger: Logger) =>
   async (socket: SocketWithAuth, next) => {
     try {
-      const token = socket.handshake.auth.Authorization.split(' ')[1];
-      logger.debug(`Validating auth token before connection: ${token}`);
-      const payload = jwtService.verify(token);
+      const cookies = cookie.parse(socket.handshake.headers.cookie || '');
+
+      const access_token = cookieParser.signedCookie(
+        cookies['access_token'] || '',
+        process.env.COOKIES_SECRET,
+      );
+
+      if (!access_token) {
+        next(new Error('FORBIDDEN'));
+      }
+
+      logger.debug(`Validating auth token before connection: ${access_token}`);
+      const payload = jwtService.verify(access_token as string);
       const user = await usersService.findOneById(payload.id);
       if (!user) {
         next(new Error('FORBIDDEN'));
       }
+
       socket.user = user;
       next();
     } catch {

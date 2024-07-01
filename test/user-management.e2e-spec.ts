@@ -3,9 +3,11 @@ import { INestApplication } from '@nestjs/common';
 import request from 'supertest';
 import { AppModule } from '../src/app.module';
 import { faker } from '@faker-js/faker';
+import cookieParser from 'cookie-parser';
 
 describe('User Management (e2e)', () => {
   let app: INestApplication;
+  let cookie: string;
 
   beforeEach(async () => {
     const moduleFixture: TestingModule = await Test.createTestingModule({
@@ -13,6 +15,9 @@ describe('User Management (e2e)', () => {
     }).compile();
 
     app = moduleFixture.createNestApplication();
+
+    app.use(cookieParser(process.env.COOKIES_SECRET));
+
     await app.init();
   });
 
@@ -58,13 +63,14 @@ describe('User Management (e2e)', () => {
         expect(typeof data.refresh_token).toBe('string');
         user.access_token = data.access_token;
         user.refresh_token = data.refresh_token;
+        cookie = response.header['set-cookie'];
       });
   });
 
   it('GET /auth/profile', () => {
     return request(app.getHttpServer())
       .get('/auth/profile')
-      .set({ authorization: `Bearer ${user.access_token}` })
+      .set('Cookie', cookie)
       .expect(200)
       .expect((response) => {
         const { updatedAt, ...profile } = response.body.data;

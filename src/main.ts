@@ -14,6 +14,7 @@ import mongoSanitize from 'express-mongo-sanitize';
 import { xss } from 'express-xss-sanitizer';
 import helmet from 'helmet';
 import rateLimit from 'express-rate-limit';
+import cookieParser from 'cookie-parser';
 
 export const logger = WinstonModule.createLogger({
   transports: [
@@ -62,6 +63,9 @@ async function bootstrap() {
 
   // sanitize xss
   app.use(xss());
+
+  // cookie
+  app.use(cookieParser(process.env.COOKIES_SECRET));
 
   // sanitize input
   app.use(bodyParser.urlencoded({ extended: true }));
