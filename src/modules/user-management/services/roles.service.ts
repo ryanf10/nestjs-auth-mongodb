@@ -9,10 +9,10 @@ export class RolesService {
   constructor(@InjectModel(Role.name) private readonly role: Model<Role>) {}
 
   async create(createRoleDto: CreateRoleDto) {
-    const createdRole = new this.role({
+    const createdRole = await this.role.create({
       name: createRoleDto.name,
     });
-    return createdRole.save();
+    return createdRole;
   }
   async getRoleById(id: string): Promise<Role> {
     return this.role.findById(id);

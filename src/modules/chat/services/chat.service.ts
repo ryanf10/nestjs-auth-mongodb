@@ -15,11 +15,11 @@ export class ChatService {
   ) {}
 
   async createChat(user1: User, user2: User) {
-    const chat = new this.chat({
+    const chat = await this.chat.create({
       user1: user1,
       user2: user2,
     });
-    return await chat.save();
+    return chat;
   }
 
   async getOneChatByParticipant(userId1: string, userId2: string) {

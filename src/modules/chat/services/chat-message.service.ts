@@ -46,11 +46,11 @@ export class ChatMessageService {
       chat = await this.chatService.createChat(sender, receiver);
     }
 
-    const chatMessage = await new this.chatMessage({
+    const chatMessage = await this.chatMessage.create({
       message: createMessageDto.message,
       sender: sender,
       chatId: chat._id,
-    }).save();
+    });
 
     chat.lastMessage = chatMessage.message;
     chat.lastMessageAt = chatMessage.createdAt;

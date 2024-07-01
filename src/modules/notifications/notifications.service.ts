@@ -29,11 +29,10 @@ export class NotificationsService {
     if (!receiver) {
       throw new NotFoundException("Receiver doesn't exist");
     }
-    const createdNotification = new this.notification({
+    const createdNotification = await this.notification.create({
       message: createNotificationDto.message,
       receiver: receiver,
     });
-    await createdNotification.save();
     await this.notificationsGateway.sendNotification(createdNotification);
     return createdNotification;
   }

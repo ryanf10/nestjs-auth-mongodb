@@ -32,13 +32,13 @@ export class UsersService {
     if (!userRole) {
       throw new InternalServerErrorException('cannot assign role');
     }
-    const createdUser = new this.user({
+    const createdUser = await this.user.create({
       username: createUserDto.username,
       email: createUserDto.email,
       password: await this.hash(createUserDto.password),
       roles: [userRole],
     });
-    return createdUser.save();
+    return createdUser;
   }
 
   async findOneByEmail(email: string): Promise<User> {
