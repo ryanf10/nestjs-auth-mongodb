@@ -38,6 +38,7 @@ jobs:
       ENCRYPTION_KEY: verySecret
       ACCESS_TOKEN_EXPIRATION: 60m
       REFRESH_TOKEN_EXPIRATION: 30d
+      COOKIES_SECRET: secret
 
     steps:
       - name: Checkout Repository
